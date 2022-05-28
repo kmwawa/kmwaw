@@ -7,83 +7,166 @@
 
 
 
-#menu-top {
-     width: 97.3%;
-    height: 55px;
-    border-top: 1px solid #e2e2e2;
-    border-bottom: 1px solid #e2e2e2;
-	background-color: red;
-	font-family: arial;
-	
-}
 
-
-
-#menu-top li a {
-    font-size: 19px;
-  
-    float: left;
-    display: block;
-    padding-left: 10px;
-	padding-right: 10px;
-    line-height: 55px;
-    height: 55px;
-    text-align: center;
-    text-decoration: none;
-    border-right: 1px solid #e2e2e2;
-    color: white;
-	font-family: arial;
-}
-#menu-top li {
-    list-style: none;
-	font-family: arial;
-}
 
 .active {
     background-color: rgb(255, 102, 0);
     color: white;
-	font-weight: bold;
-	font-family: arial;
-}
-
-
-#menu-top li a:hover {
-    background-color: rgb(94, 0, 255);
-    color: #ffffff;
+	font-weight: 700;
 	font-family: arial;
 	
 }
-i1 {
-color: white;
-background-color: rgba(0, 0, 0, 0.51);
-font-family: arial;
-font-size: 12px;
+
+
+#i1 {width: 99%;
+	background-color: rgba(0, 0, 0, 0.51);
+	line-height: 10px;
+	 text-align: left;
+	font-size: 10px;
+	margin-top: 70px;
+	color: white;
+    font-family: arial;
+position: absolute;
+}
+</style> 
+<style>
+.menu111 {
+    
+	 padding: 50px 10px 0 10px;
+	 height: 70px;
+   
+    font-family: arial;
+	
+}
+.menu111 a {
+width: 160px;
+text-decoration: none;
+padding-left: 5px;
+padding-right: 5px;
+text-align: center;
+
+}
+
+ol
+{ 
+ font-size: 17px;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	display: inline-block;
+	z-index: 2;
+	font-weight: 510;
+	font-family: arial;
+}
+ul {
+background-color: red;
+z-index: 2;
+}
+li {
+line-height: 70px;
+z-index: 100;
+}
+
+ol a
+{
+	color: #ffffff;
+	text-decoration: none;
+	display: block;
+	
+}
+
+ol > li
+{
+	float: left;
+	height: 70px;
+		border-right: 1px solid #751b1b;
+		background-color: red;
+}
+
+ol > li:first-child
+{
+	
+	
+}
+
+ol > li:hover
+{
+	background-color: rgb(94, 0, 255);
+	z-index: -2;
+}
+
+ol > li:hover > a
+{
+	line-height: 70px;
+}
+
+ol > li > ul
+{
+	list-style-type: none;
+	padding: 0;
+	white-space:nowrap;
+	height: 70px;
+	width: 200%;
+	display: none;
+	margin: auto;
+	text-align: center;
+	
+	
+}
+
+ol > li:hover > ul
+{
+	display: block;
+	background-color: red;
+	z-index: 100;
+}
+
+
+
+ol > li > ul > li:hover
+{ 
+white-space:nowrap;
+	background-color: rgb(54, 0, 155);
+	color: #ffffff;
+	z-index: 2;
+}
+
+ol > li > ul > li:hover > a
+{
+	color: #ffffff;
 }
 </style>
 </head>
-<i1>
-Rozkład jazdy wszystkich linii/przystanki/mapy-schematy linii strefowych pochodzą ze strony: <u><a href="https://www.wtp.waw.pl/" style="text-decoration: none; color: white;";>https://www.wtp.waw.pl/</a></u> &nbsp;&nbsp;&nbsp;<br>
+
+
+<div id="">
+<body>
+<nav class="menu111">
+<ol>
+<li><a class="active" href="#">STRONA GŁÓWNA</a></li>
+<li><a class="pix" href="https://tspt27.webwave.dev/">TRASY LINII</a></li>
+<li><a class="pix" href="https://tspt27.webwave.dev/brygady-linii">BRYGADY</a></li>
+<li><a class="pix" href="https://tspt27.webwave.dev/rozklad-jazdy-linii">ROZKŁAD JAZDY</a></li>
+<li><a class="pix" href="https://tspt27.webwave.dev/mapy-i-schematy">MAPY I SCHEMATY</a>
+<ul><li><a class="pix" href="wszystkie linie.html">SCHEMATY LINII TRAMWAJOWYCH</a></li></ul>
+<li><a class="pix" href="https://tspt27.webwave.dev/km-w-wa">KM W-WA</a></li>
+</ol>
+</nav>
+</div>
+<div id="i1"><p>
+Rozkład jazdy wszystkich linii/przystanki/mapy-schematy linii strefowych pochodzą ze strony: <u><a href="https://www.wtp.waw.pl/" style="text-decoration: none; color: white;";>https://www.wtp.waw.pl/</a></u> &nbsp;&nbsp;&nbsp;
 Zapowiedzi głosowe pochodzą z autobusów i tramwajów z Warszawy</i1>
 
-<p><i1>UWAGA! Zmiany brygad trwające do 3 dni (z wyjątkiem do 3 dni w cyklu tygodniowym) nie będą uwzględniane. Trasy brygad linii, które mają specjalne rozkłady jazdy od 1 do 3 dni będą na początku w zakładce "BRYGADY"
+<i1><p>UWAGA! Zmiany brygad trwające do 3 dni (z wyjątkiem do 3 dni w cyklu tygodniowym) nie będą uwzględniane. Trasy brygad linii, które mają specjalne rozkłady jazdy od 1 do 3 dni będą na początku w zakładce "BRYGADY"
 </i1>
-<body><ul id="menu-top">
-<li><a class="active" href="#">STRONA GŁÓWNA</a></li>
-<li><a href="https://tspt27.webwave.dev/">TRASY LINII</a></li>
-<li><a href="https://tspt27.webwave.dev/brygady-linii">BRYGADY</a></li>
-<li><a href="https://tspt27.webwave.dev/rozklad-jazdy-linii">ROZKŁAD JAZDY</a></li>
-<li><a href="https://tspt27.webwave.dev/mapy-i-schematy">MAPY I SCHEMATY</a></li>
-<li><a href="https://tspt27.webwave.dev/km-w-wa">KM W-WA</a></li>
-<li><a href="https://tspt27.webwave.dev/km-w-wa">wszystkie linie - schemat przystanków</a></li>	
-</ul>
-
-
-
+</div>
 <style>
+ 
+
 
 #prostokąt {
 	width: 100%;
-	height: 68px;
+	
 	line-height: 68px;
 	 text-align: center;
 	font-size: 48px;
@@ -94,5 +177,6 @@ Zapowiedzi głosowe pochodzą z autobusów i tramwajów z Warszawy</i1>
     font-family: arial;
 	
  	}
+
 </style>
 </body></html>
