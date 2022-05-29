@@ -5,161 +5,132 @@
 
 
 
-
-
-
-
-.active {
+#active {
     background-color: rgb(255, 102, 0);
-    color: white;
+	    color: white;
 	font-weight: 700;
 	font-family: arial;
 	
 }
 
 
-#i1 {width: 99%;
+i1 {width: 99%;
 	background-color: rgba(0, 0, 0, 0.51);
-	line-height: 10px;
+	line-height: 8px;
 	 text-align: left;
 	font-size: 10px;
-	margin-top: 70px;
+	margin-top: 45px;
 	color: white;
     font-family: arial;
 position: absolute;
 }
 </style> 
 <style>
-.menu111 {
-    
-	 padding: 50px 10px 0 10px;
-	 height: 70px;
+#menu {
+     text-align: left;
+     overflow: hidden;
+     font-family: arial;
+	 background-color: red;
+	 padding: 10px ;
+	 font-weight: 600;
+	 margin-top: 40px;
+}
+
+ul#menu li {
+     border-right: 1px solid white;
+     list-style-type: none;
+     float: left;
+     background-color: red;
+	 color: white;
+    padding: 10px ;
+}
+ul#menu ol {
+     border-right: 1px solid white;
+     list-style-type: none;
+     float: left;
+     background-color: red;
+	 color: white;
+	 
    
-    font-family: arial;
-	
 }
-.menu111 a {
-width: 160px;
-text-decoration: none;
-padding-left: 5px;
-padding-right: 5px;
-text-align: center;
-
+ul#menu li:hover {
+     
+     list-style-type: none;
+     float: left;
+     background-color: rgb(94, 0, 255);
+    
+	 color: #ffffff;
 }
 
-ol
-{ 
- font-size: 17px;
-	padding: 0;
-	margin: 0;
-	list-style-type: none;
-	display: inline-block;
-	z-index: 2;
-	font-weight: 510;
-	font-family: arial;
+ul#menu li a {
+     display : block;
+     padding : 4px;
+     text-decoration : none;
+	  color: #ffffff;
+	  
 }
-ul {
-background-color: red;
-z-index: 2;
-}
-li {
-line-height: 70px;
-z-index: 100;
+ul#menu ol a1 {
+     display : block;
+     padding : 14px;
+     text-decoration : none;
+	  color: #ffffff;
+	  margin-left: -40px;
+	  
 }
 
-ol a
-{
-	color: #ffffff;
-	text-decoration: none;
-	display: block;
-	
+ul#menu li li a {
+     width: 200px;
+	 
 }
 
-ol > li
-{
-	float: left;
-	height: 70px;
-		border-right: 1px solid #751b1b;
-		background-color: red;
+ul#menu li li:hover {
+     background-color: rgb(54, 0, 155);
+	 colro: white;
+	 
 }
 
-ol > li:first-child
-{
-	
-	
+ul#menu li ul {
+     overflow: hidden;
+     display: none;
+	 
 }
 
-ol > li:hover
-{
-	background-color: rgb(94, 0, 255);
-	z-index: -2;
-}
-
-ol > li:hover > a
-{
-	line-height: 70px;
-}
-
-ol > li > ul
-{
-	list-style-type: none;
-	padding: 0;
-	white-space:nowrap;
-	height: 70px;
-	width: 200%;
-	display: none;
-	margin: auto;
-	text-align: center;
-	
-	
-}
-
-ol > li:hover > ul
-{
-	display: block;
-	background-color: red;
-	z-index: 100;
-}
-
-
-
-ol > li > ul > li:hover
-{ 
-white-space:nowrap;
-	background-color: rgb(54, 0, 155);
-	color: #ffffff;
-	z-index: 2;
-}
-
-ol > li > ul > li:hover > a
-{
-	color: #ffffff;
+ul#menu li:hover ul {
+     position: absolute;
+     
+     padding: 0;
+     display: block;
+     width: 200px;
+	 padding: 10px 0px;
+	 z-index: 2;
 }
 </style>
 </head>
 
 
-<div id="">
+
 <body>
-<nav class="menu111">
-<ol>
-<li><a class="active" href="#">STRONA GŁÓWNA</a></li>
-<li><a class="pix" href="https://tspt27.webwave.dev/">TRASY LINII</a></li>
-<li><a class="pix" href="https://tspt27.webwave.dev/brygady-linii">BRYGADY</a></li>
-<li><a class="pix" href="https://tspt27.webwave.dev/rozklad-jazdy-linii">ROZKŁAD JAZDY</a></li>
-<li><a class="pix" href="https://tspt27.webwave.dev/mapy-i-schematy">MAPY I SCHEMATY</a>
-<ul><li><a class="pix" href="wszystkie linie.html">SCHEMATY LINII TRAMWAJOWYCH</a></li></ul>
-<li><a class="pix" href="https://tspt27.webwave.dev/km-w-wa">KM W-WA</a></li>
-</ol>
-</nav>
-</div>
-<div id="i1"><p>
+<ul id="menu">
+	<ol><a1 id="active" href="#">STRONA GŁÓWNA</a1></ol>
+    <li><a href="https://tspt27.webwave.dev/">TRASY LINII</a>
+    <li><a href="https://tspt27.webwave.dev/brygady-linii">BRYGADY</a></li>
+    <li><a href="https://tspt27.webwave.dev/rozklad-jazdy-linii">ROZDKŁAD JAZDY</a>
+    <li><a href="https://tspt27.webwave.dev/mapy-i-schematy">MAPY I SCHEMATY</a>
+    <ul>
+    <li><a href="wszystkie linie.html">SCHEMATY LINII TRAMWAJOWYCH</a></li>
+    </ul>
+    </li>
+    <li><a href="https://tspt27.webwave.dev/km-w-wa">KM W-WA</a>
+    </li>
+</ul>
+
+<i1><p>
 Rozkład jazdy wszystkich linii/przystanki/mapy-schematy linii strefowych pochodzą ze strony: <u><a href="https://www.wtp.waw.pl/" style="text-decoration: none; color: white;";>https://www.wtp.waw.pl/</a></u> &nbsp;&nbsp;&nbsp;
 Zapowiedzi głosowe pochodzą z autobusów i tramwajów z Warszawy</i1>
 
 <i1><p>UWAGA! Zmiany brygad trwające do 3 dni (z wyjątkiem do 3 dni w cyklu tygodniowym) nie będą uwzględniane. Trasy brygad linii, które mają specjalne rozkłady jazdy od 1 do 3 dni będą na początku w zakładce "BRYGADY"
 </i1>
-</div>
+
 <style>
  
 
