@@ -28,16 +28,7 @@
 }
 
 
-i1 {width: 99%;
-	background-color: rgba(0, 0, 0, 0.51);
-	line-height: 8px;
-	 text-align: left;
-	font-size: 10px;
-	margin-top: 45px;
-	color: white;
-    font-family: arial;
-position: absolute;
-}
+
 </style> 
 <style>
 #menu {
@@ -170,7 +161,7 @@ ul#menu ol:hover ul {
 		
 
 <div style="margin-top: 40px;"></div>
-<i1 style="left: 0px;right: 0px;">
+<div id="wrapper4">
 	<ul2>
 	<li2><a href="https://tspt27.webwave.dev/obsluga-linii?wwShowPage=e2676f42878d1bde5cd025fe5123365613857d1f3af17cb938cfd90a90cb7bf1">OBSŁUGA LINII</a></li2>
     <li2><a href="https://tspt27.webwave.dev/kalendarz">KALENDARZ</a></li2>
@@ -182,7 +173,7 @@ ul#menu ol:hover ul {
 	<li2><a href="https://tc2klw.webwave.dev/kto-obsluguje-linie">KTO OBSŁUGUJE LINIE?</a></li2>
 	<li2><a href="https://tspt27.webwave.dev/obsluga-linii?anchorElement=element_6744&scrollMargin=10">Wyjazdy i zjazdy do zajezdni tramwajowych</a></li2>
 	
-</ul2></i1><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</ul2></div><br><br>
 	        <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167279353-1"></script>
 <script>
@@ -203,6 +194,7 @@ ul2 {
 	 width: 65%;
 	 margin: auto;
 	font-size: 18px;
+	z-index: 2;
 	
 }
 li2 {
@@ -218,37 +210,39 @@ li2 {
 	border-bottom: solid 2px white;
 	 text-align: left;
 	 line-height: 22px;
+	 	z-index: 2;
 }
  a {
      display : block;
      
      text-decoration : none;
 	  color: white;
-	  
+	  	z-index: 2;
 }
 li2:hover {
      background-color: rgb(54, 0, 155);
-	 colro: white;
+	 color: white;
 	 
 }
 
 
-
-
-i1 {
-
-   width: 80%;
-   
-    padding-top: 45px;
-	padding-bottom: 45px;
+#wrapper4 {
+ 
+   max-width: 90%;
+    margin-left: auto; margin-right: auto;
+    padding: 25px;
 	font-family: Arial;
-    font-weight: 300;
+    font-weight: 500;
 	z-index:2;
-	
+	 content: " ";
 	margin: auto;
-    text-align: center;
+    
     background-color: #00000087;
-  
+    background-size: cover;
+    background-attachment: initial;
+ 
+    background-repeat: no-repeat;
+    background-position: left top;
 	z-index:-2;
 }
 
