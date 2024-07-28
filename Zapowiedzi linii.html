@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Przyciski z Muzyką</title>
+    <style>
+        .container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .button1 {
+            background-color: red; /* Czerwony */
+            color: white;
+        }
+        .button2 {
+            background-color: #ff6d00; /* Pomarańczowy */
+            color: white;
+        }
+        .button3 {
+            background-color: #ffde00; /* Żółty */
+            color: ;
+        }
+		.button4 {
+            background-color: #0089e5; /* Niebieski */
+            color: white;
+        }
+		.button5 {
+            background-color: black; /* Czarny */
+            color: white;
+        }
+        .button-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .song-list {
+            font-family: Barlow;
+            display: none;
+            margin-top: 10px;
+            position: relative;
+            top: 100%; /* Przesuń poniżej przycisku */
+            left: 0;
+            white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+			
+        }
+        .current-song {
+            font-weight: ;
+        }
+        .song-info {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+            max-width: 13px; /* Dostosuj maksymalną szerokość obrazka */
+            height: auto; /* Zapewnij, że wysokość jest automatycznie dostosowywana */
+        }
+        .ul1 {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+		#linia {
+		font-size: 20px;
+		font-weight: bold;
+		font-family: Barlow;
+		border-bottom: solid 3px #00CCFF;
+		width: 10%;
+		padding: 4px;
+		margin: 10px;
+		}
+		.square {
+            width:100px;
+            height: 20px;
+            background-color: red;
+            float: left;
+			font-family: Barlow;
+        }
+        .square1 {
+            width:100px;
+            height: 20px;
+            background-color: #ff6d00;
+            float: left;
+			font-family: Barlow;
+        }
+		.square2 {
+            width:100px;
+            height: 20px;
+            background-color: #ffde00;
+            float: left;
+			font-family: Barlow;
+        }
+        .square3 {
+            width:100px;
+            height: 20px;
+            background-color: #0089e5;
+            float: left;
+			font-family: Barlow;
+        }
+		.square4 {
+            width:100px;
+            height: 20px;
+            background-color: black;
+            float: left;
+			color: white;
+			font-family: Barlow;
+        }
+		
+		#str1 {
+		font-family: Barlow;
+		}
+		.vertical-line {
+            border-left: 3px solid black; /* Grubość i kolor kreski */
+            height: 40px; /* Wysokość kreski */
+            margin: 0 0px 0 0px; /* Odstęp od innych elementów */
+        }
+    </style>
+</head>
+<body>
+    <h1 id="str1">Zapowiedzi linii</h1>
+	<p style="background-color:#ffffcc; font-size: 17px;">(aby poprawnie działało nie należy zmieniać linii w czasie włączonych już zapowiedzi, można dopiero włączyć gdy skończy się cała lista zapowiedzi, można również aby nie czekać do końca zapowiedzi odświerzyć stronę i kliknąć nową zapowiedź)</p><br>
+     <div class="square" style="text-align: center;">(TP)</div>&nbsp; - <a id="str1">Trasa Podstawowa
+    <p style="margin-block-start: 3px; margin-block-end: 3px;">
+    <div class="square1" style="text-align: center;">(TZ)</div>&nbsp; - Trasa Zmieniona
+	<p style="margin-block-start: 3px; margin-block-end: 3px;">
+	<div class="square2" style="text-align: center;">(TS)</div>&nbsp; - Trasa Skrócona
+    <p style="margin-block-start: 3px; margin-block-end: 3px;">
+    <div class="square3" style="text-align: center;">(TN)</div>&nbsp; - Nowa Trasa
+	<p style="margin-block-start: 3px; margin-block-end: 3px;">
+    <div class="square4" style="text-align: center;">(ZJAZD)</div>&nbsp; - Zjazd do Zajezdni</a>
+	
+	
+	
+	<div id="linia">linia 1</div>
+	<div class="container">
+        <div class="vertical-line"></div>
+		<div class="button-container">
+            <button class="button button1" onclick="toggleSongs('songList1', [
+                'https://kmwawa.github.io/zapowiedzi/Annopol.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Wawelska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Wawelska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Och-Teatr.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Och-Teatr.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Bitwy Warszawskiej 1920 r..mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Bitwy Warszawskiej 1920 r..mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Banacha.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Banacha.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY.mp3', 
+            ])">1 ANN - BAN</button>
+            <div id="songList1" class="song-list">
+                <ul class="ul1">
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Annopol</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Toruńska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Bródno</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Poborzańska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rembielińska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Julianowska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Budowlana</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pożarowa</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Staniewicka</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Żaba</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Namysłowska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wybrzeże Helskie</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Most Gdański</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Park Traugutta</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dw. Gdański</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Baseny Inflancka</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Powązkowska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Niska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Cm. Żydowski</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Żytnia</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Okopowa</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Daszyńskiego</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Zawiszy</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Ochota-Ratusz</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Narutowicza</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wawelska</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Och-Teatr</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Bitwy Warszawskiej 1920 r.</li>
+                    <li id="song1"><img src="https://kmwawa.github.io/kmwaw/przy_kon.png" class="song-info">Banacha</li>
+                </ul>
+            </div>
+        </div>
+		
+       
+        <div class="button-container">
+            <button class="button button1" onclick="toggleSongs('songList1a', [
+    'https://kmwawa.github.io/zapowiedzi/Banacha.mp3',
+	'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Banacha.mp3',
+	'https://kmwawa.github.io/zapowiedzi/Banacha.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Bitwy Warszawskiej 1920 r..mp3',
+    'https://kmwawa.github.io/zapowiedzi/Bitwy Warszawskiej 1920 r..mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Och-Teatr.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Och-Teatr.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Wawelska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Wawelska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+	'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+	'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+	'https://kmwawa.github.io/zapowiedzi/Annopol.mp3',
+	'https://kmwawa.github.io/zapowiedzi/Annopol.mp3',
+	'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY.mp3', 
+            ])">1 BAN - ANN</button>
+            <div id="songList1a" class="song-list">
+                <ul class="ul1">
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Banacha</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Banacha</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Bitwy Warszawskiej 1920 r.</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Och-Teatr</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wawelska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Narutowicza</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Ochota-Ratusz</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Zawiszy</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Daszyńskiego</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Okopowa</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Żytnia</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dzielna</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Cm. Żydowski</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Niska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Powązkowska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Radosława</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Baseny Inflancka</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dw. Gdański</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Park Traugutta</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Most Gdański</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wybrzeże Helskie</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Namysłowska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Żaba</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Staniewicka</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pożarowa</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Budowlana</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Julianowska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rembielińska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Poborzańska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Bródno</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Toruńska</li>
+<li id="song1a"><img src="https://kmwawa.github.io/kmwaw/przy_kon.png" class="song-info">Annopol</li>
+
+
+
+                </ul>
+            </div>
+        </div>
+		<div class="vertical-line"></div>
+		<div class="button-container">
+            <button class="button button1" onclick="toggleSongs('songList1b', [
+                'https://kmwawa.github.io/zapowiedzi-4/Żerań Wschodni.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Faradaya.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Faradaya.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Odlewnicza.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Odlewnicza.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Inowłodzka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Inowłodzka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY.mp3',
+            ])">1 ZEW - NAR</button>
+            <div id="songList1b" class="song-list" style="">
+                <ul class="ul1">
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Żerań Wschodni</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Faradaya</li>				   
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Odlewnicza</li>				   
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Inowłodzka</li>				     
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Toruńska</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Bródno</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Poborzańska</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rembielińska</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Julianowska</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Budowlana</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pożarowa</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Staniewicka</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Żaba</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Namysłowska</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wybrzeże Helskie</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Most Gdański</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Park Traugutta</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dw. Gdański</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Baseny Inflancka</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Powązkowska</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Niska</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Cm. Żydowski</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Żytnia</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Okopowa</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Daszyńskiego</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Zawiszy</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Ochota-Ratusz</li>
+<li id="song1b"><img src="https://kmwawa.github.io/kmwaw/przy_kon.png" class="song-info">Pl. Narutowicza</li>
+
+
+                </ul>
+            </div>
+        </div>
+		<div class="button-container">
+            <button class="button button1" onclick="toggleSongs('songList1c', [
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Dw. Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Dw. Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3',
+'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Inowłodzka.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Inowłodzka.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Odlewnicza.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Odlewnicza.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Faradaya.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Faradaya.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żerań Wschodni.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żerań Wschodni.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY.mp3',
+
+            ])">1 NAR - ZEW</button>
+            <div id="songList1c" class="song-list" style="">
+                <ul class="ul1">
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Pl. Narutowicza</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Ochota-Ratusz</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Zawiszy</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Daszyńskiego</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Okopowa</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Żytnia</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dzielna</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Cm. Żydowski</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Niska</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Powązkowska</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Radosława</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Baseny Inflancka</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dw. Gdański</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Park Traugutta</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Most Gdański</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wybrzeże Helskie</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Namysłowska</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Żaba</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Staniewicka</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pożarowa</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Budowlana</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Julianowska</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rembielińska</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Poborzańska</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Bródno</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Toruńska</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Inowłodzka</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Odlewnicza</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Faradaya</li>
+<li id="song1c"><img src="https://kmwawa.github.io/kmwaw/przy_kon.png" class="song-info">Żerań Wschodni</li>
+
+                </ul>
+            </div>
+        </div>
+		<div class="vertical-line"></div>
+		<div class="button-container">
+            <button class="button button3" onclick="toggleSongs('songList1d', [
+                'https://kmwawa.github.io/zapowiedzi/Annopol.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY OSTATNI PRZYSTANEK.mp3','https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY OSTATNI PRZYSTANEK.mp3','https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY OSTATNI PRZYSTANEK.mp3','https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY.mp3','https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK KOŃCOWY PROSIMY O OPUSZCZENIE POJAZDU.mp3',
+            ])">1 ANN - NAR</button>
+            <div id="songList1d" class="song-list" style="">
+                <ul class="ul1">
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_pocz_TS.png" class="song-info">Annopol</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Toruńska</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Metro Bródno</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Poborzańska</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Rembielińska</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Julianowska</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Budowlana</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Pożarowa</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Staniewicka</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Rondo Żaba</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Namysłowska</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Wybrzeże Helskie</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Most Gdański</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Park Traugutta</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Dw. Gdański</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Baseny Inflancka</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Powązkowska</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Niska</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Cm. Żydowski</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Żytnia</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Okopowa</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Rondo Daszyńskiego</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Pl. Zawiszy</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_TS.png" class="song-info">Ochota-Ratusz</li>
+                    <li id="song1d"><img src="https://kmwawa.github.io/kmwaw/przy_kon_TS.png" class="song-info">Pl. Narutowicza</li>
+                </ul>
+            </div>
+        </div>
+		<div class="button-container">
+            <button class="button button1" onclick="toggleSongs('songList1e', [
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Dw. Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Dw. Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3',
+'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi/Annopol.mp3',
+'https://kmwawa.github.io/zapowiedzi/Annopol.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY.mp3',
+
+            ])">1 NAR - ANN</button>
+            <div id="songList1e" class="song-list" style="">
+                <ul class="ul1">
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Pl. Narutowicza</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Ochota-Ratusz</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Zawiszy</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Daszyńskiego</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Okopowa</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Żytnia</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dzielna</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Cm. Żydowski</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Niska</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Powązkowska</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Radosława</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Baseny Inflancka</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dw. Gdański</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Park Traugutta</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Most Gdański</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wybrzeże Helskie</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Namysłowska</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Żaba</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Staniewicka</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pożarowa</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Budowlana</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Julianowska</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rembielińska</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Poborzańska</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Bródno</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Toruńska</li>
+<li id="song1e"><img src="https://kmwawa.github.io/kmwaw/przy_kon.png" class="song-info">Annopol</li>
+
+                </ul>
+            </div>
+        </div>
+		<div class="vertical-line"></div>
+		<div class="button-container">
+            <button class="button button5" onclick="toggleSongs('songList1f', [
+                'https://kmwawa.github.io/zapowiedzi/Annopol.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY PROSIMY O OPUSZCZENIE POJAZDU.mp3', 
+            ])">1 ANN - ZET ŻOLIBORZ</button>
+            <div id="songList1f" class="song-list">
+                <ul class="ul1">
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Annopol</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Toruńska</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Bródno</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Poborzańska</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rembielińska</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Julianowska</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Budowlana</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pożarowa</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Staniewicka</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Żaba</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Namysłowska</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wybrzeże Helskie</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Most Gdański</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Park Traugutta</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dw. Gdański</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_1_TZ.png" class="song-info">Baseny Inflancka</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Rondo Radosława</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Pl. Grunwaldzki</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Ks. Popiełuszki</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Marymont</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Park Kaskada</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Słodowiec</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Podleśna-IMGW</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">AWF</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Szpital Bielański</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">UKSW</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Przy Agorze</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Cm. Włoski</li>
+                    <li id="song1f"><img src="https://kmwawa.github.io/kmwaw/przy_kon_TZ.png" class="song-info">Zajezdnia Żoliborz</li>
+                </ul>
+            </div>
+        </div>
+		<div class="button-container">
+            <button class="button button5" onclick="toggleSongs('songList1g', [
+                'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY PROSIMY O OPUSZCZENIE POJAZDU.mp3', 
+            ])">1 NAR - ZET ŻOLIBORZ</button>
+            <div id="songList1g" class="song-list">
+                <ul class="ul1">
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Pl. Narutowicza</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Ochota-Ratusz</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Zawiszy</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Daszyńskiego</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Okopowa</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Żytnia</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dzielna</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Cm. Żydowski</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Niska</li>
+<li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Powązkowska</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_1_TZ.png" class="song-info">Rondo Radosława</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Pl. Grunwaldzki</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Ks. Popiełuszki</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Marymont</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Park Kaskada</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Słodowiec</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Podleśna-IMGW</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">AWF</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Szpital Bielański</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">UKSW</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Przy Agorze</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Cm. Włoski</li>
+                    <li id="song1g"><img src="https://kmwawa.github.io/kmwaw/przy_kon_TZ.png" class="song-info">Zajezdnia Żoliborz</li>
+                </ul>
+            </div>
+        </div>
+		<div class="button-container">
+            <button class="button button5" onclick="toggleSongs('songList1h', [
+    'https://kmwawa.github.io/zapowiedzi/Banacha.mp3',
+	'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Banacha.mp3',
+	'https://kmwawa.github.io/zapowiedzi/Banacha.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi/Bitwy Warszawskiej 1920 r..mp3',
+    'https://kmwawa.github.io/zapowiedzi/Bitwy Warszawskiej 1920 r..mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Och-Teatr.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Och-Teatr.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Wawelska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-4/Wawelska.mp3',
+    'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3',
+    'https://kmwawa.github.io/zapowiedzi-3/Pl. Narutowicza.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Ochota-Ratusz.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Pl. Zawiszy.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Rondo Daszyńskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Muzeum Powstania Warszawskiego.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Okopowa.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/Żytnia.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/Dzielna.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi/Cm. Żydowski.mp3', 
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Niska.mp3',
+'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+'https://kmwawa.github.io/zapowiedzi-3/Powązkowska.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY PROSIMY O OPUSZCZENIE POJAZDU.mp3', 
+            ])">1 BAN - ZET ŻOLIBORZ</button>
+            <div id="songList1h" class="song-list">
+                <ul class="ul1">
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Banacha</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Banacha</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Bitwy Warszawskiej 1920 r.</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Och-Teatr</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wawelska</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Narutowicza</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Ochota-Ratusz</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pl. Zawiszy</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Daszyńskiego</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Muzeum Powstania Warszawskiego</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Okopowa</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Żytnia</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dzielna</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Cm. Żydowski</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Niska</li>
+<li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Powązkowska</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_1_TZ.png" class="song-info">Rondo Radosława</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Pl. Grunwaldzki</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Ks. Popiełuszki</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Marymont</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Park Kaskada</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Słodowiec</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Podleśna-IMGW</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">AWF</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Szpital Bielański</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">UKSW</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Przy Agorze</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Cm. Włoski</li>
+                    <li id="song1h"><img src="https://kmwawa.github.io/kmwaw/przy_kon_TZ.png" class="song-info">Zajezdnia Żoliborz</li>
+                </ul>
+            </div>
+        </div>
+		<div class="button-container">
+            <button class="button button5" onclick="toggleSongs('songList1i', [
+                'https://kmwawa.github.io/zapowiedzi-4/Żerań Wschodni.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Faradaya.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Faradaya.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Odlewnicza.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Odlewnicza.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Inowłodzka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Inowłodzka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Toruńska.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Bródno.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Poborzańska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rembielińska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Julianowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi/Budowlana.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pożarowa.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Staniewicka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Żaba.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Namysłowska.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Starzyńskiego.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/Wybrzeże Helskie.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Most Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Traugutta.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Dw. Gdański.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+                'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3','https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Baseny Inflancka.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Rondo Radosława.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-3/Pl. Grunwaldzki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Ks. Popiełuszki.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Marymont.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Park Kaskada.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Słodowiec.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Podleśna-IMGW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi/AWF.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Szpital Bielański.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/UKSW.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/Przy Agorze.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi/Cm. Włoski.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-4/Zajezdnia Żoliborz.mp3',
+				'https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY PROSIMY O OPUSZCZENIE POJAZDU.mp3', 
+            ])">1 ZEW - ZET ŻOLIBORZ</button>
+            <div id="songList1i" class="song-list">
+                <ul class="ul1">
+<li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Żerań Wschodni</li>
+<li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Faradaya</li>				   
+<li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Odlewnicza</li>				   
+<li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Inowłodzka</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Toruńska</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Bródno</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Poborzańska</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rembielińska</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Julianowska</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Budowlana</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Pożarowa</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Staniewicka</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Żaba</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Namysłowska</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Rondo Starzyńskiego</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Wybrzeże Helskie</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Most Gdański</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Park Traugutta</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Dw. Gdański</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_1_TZ.png" class="song-info">Baseny Inflancka</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Rondo Radosława</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Pl. Grunwaldzki</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Ks. Popiełuszki</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Marymont</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Park Kaskada</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Metro Słodowiec</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Podleśna-IMGW</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">AWF</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Szpital Bielański</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">UKSW</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Przy Agorze</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_TZ.png" class="song-info">Cm. Włoski</li>
+                    <li id="song1i"><img src="https://kmwawa.github.io/kmwaw/przy_kon_TZ.png" class="song-info">Zajezdnia Żoliborz</li>
+                </ul>
+            </div>
+        </div>
+		
+		
+		
+		
+		
+		
+		
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+    
+
+    <audio id="audioPlayer"></audio>
+
+    <script> 
+      
+       let currentSongElement = null;
+let isPlaying = false; // Dodajemy zmienną, która śledzi stan odtwarzania
+let currentListId = null; // Dodajemy zmienną, która śledzi bieżącą listę
+
+document.getElementById('stopButton').addEventListener('click', stopPlayback);
+
+function toggleSongs(listId, songList) {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const songListElement = document.getElementById(listId);
+    
+    // Jeśli kliknięto przycisk aktualnie odtwarzającej się listy, zatrzymaj odtwarzanie
+    if (isPlaying && currentListId === listId) {
+        stopPlayback();
+        return;
+    }
+  
+    // Jeśli odtwarzana jest inna lista, zatrzymaj ją
+    if (isPlaying && currentListId !== listId) {
+        stopPlayback();
+    }
+
+    // Ukryj wszystkie listy
+    document.querySelectorAll('.song-list').forEach(list => {
+        list.style.display = 'none';
+    });
+
+    // Pokaż wybraną listę
+    const selectedList = document.getElementById(listId);
+    selectedList.style.display = 'block';
+
+    // Rozpocznij odtwarzanie piosenek
+    playSongs(songList, listId);
+}
+
+function playSongs(songList, listId) {
+    const audioPlayer = document.getElementById('audioPlayer');
+    let currentSong = 0;
+    isPlaying = true;
+    currentListId = listId;
+
+    // Aktualizuj styl bieżącej piosenki
+    updateCurrentSongStyle(listId, currentSong);
+
+    audioPlayer.src = songList[currentSong];
+    audioPlayer.play();
+
+    audioPlayer.onended = function() {
+        currentSong++;
+        if (currentSong < songList.length) {
+            updateCurrentSongStyle(listId, currentSong);
+            audioPlayer.src = songList[currentSong];
+            audioPlayer.play();
+        } else {
+            stopPlayback();
+        }
+    };
+}
+
+function updateCurrentSongStyle(listId, currentSongIndex) {
+    // Usuń pogrubienie z poprzedniego elementu
+    if (currentSongElement) {
+        currentSongElement.classList.remove('current-song');
+    }
+
+    // Dodaj pogrubienie do bieżącego elementu
+    const songId = `song${listId.charAt(listId.length - 1)}_${currentSongIndex}`;
+    currentSongElement = document.getElementById(songId);
+    if (currentSongElement) {
+        currentSongElement.classList.add('current-song');
+    }
+}
+
+function stopPlayback() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    audioPlayer.pause();
+    audioPlayer.src = '';
+    isPlaying = false;
+    currentListId = null;
+
+    // Ukryj listę
+    if (currentListId) {
+        document.getElementById(currentListId).style.display = 'none';
+    }
+
+    // Usuń pogrubienie z bieżącego elementu
+    if (currentSongElement) {
+        currentSongElement.classList.remove('current-song');
+    }
+}
+
+		
+		
+	
+
+
+function playSongs(songList, listId) {
+    const audioPlayer = document.getElementById('audioPlayer');
+    let currentSong = 0;
+    let isPlaying = true;
+    let currentListId = listId;
+    let skipDelay = false; // Flaga do pomijania opóźnienia 5 sekund
+
+    // Funkcja sprawdzająca, czy piosenka zaczyna się od "UWAGA!", "OSTATNI" lub "KONIEC"
+    function startsWithSpecialWords(songUrl) {
+        return songUrl.includes("UWAGA!") || songUrl.includes("OSTATNI") || songUrl.includes("KONIEC") || songUrl.includes("PRZYSTANEK KOŃCOWY PROSIMY O OPUSZCZENIE POJAZDU");
+    }
+
+    // Funkcja sprawdzająca, czy piosenka jest "NASTĘPNY PRZYSTANEK.mp3" lub "Ostatni przystanek na trasie linii"
+    function isNextStopSong(songUrl) {
+        return songUrl.endsWith("NASTĘPNY PRZYSTANEK.mp3") || songUrl.includes("OSTATNI PRZYSTANEK");
+    }
+
+    // Funkcja aktualizująca styl bieżącej piosenki (do dostosowania według potrzeb)
+    function updateCurrentSongStyle(listId, currentSong) {
+        // Implementacja aktualizacji stylu, jeśli potrzebna
+    }
+
+    function playNextSong() {
+        currentSong++;
+        if (currentSong < songList.length) {
+            updateCurrentSongStyle(listId, currentSong);
+            audioPlayer.src = songList[currentSong];
+            audioPlayer.play();
+        } else {
+            isPlaying = false;
+            currentListId = null;
+            // Usuń pogrubienie po zakończeniu listy
+            // if (currentSongElement) {
+            //     currentSongElement.classList.remove('current-song');
+            // }
+        }
+    }
+
+    // Event listener dla zdarzenia ended audio playera
+    audioPlayer.addEventListener('ended', function onEnded() {
+        if (startsWithSpecialWords(songList[currentSong + 1])) {
+            // Jeśli następny utwór zaczyna się od "UWAGA!", "OSTATNI" lub "KONIEC", załaduj go i odtwórz od razu
+            currentSong++;
+            updateCurrentSongStyle(listId, currentSong);
+            audioPlayer.src = songList[currentSong];
+            audioPlayer.play();
+        } else if (skipDelay || !isNextStopSong(songList[currentSong])) {
+            // Jeśli flaga skipDelay jest ustawiona lub piosenka nie jest "NASTĘPNY PRZYSTANEK.mp3" lub "Ostatni przystanek na trasie linii"
+            setTimeout(playNextSong, 3000); // 5000 ms = 5 sekund
+            skipDelay = false; // Zresetuj flagę skipDelay
+        } else {
+            // Jeśli to jest "NASTĘPNY PRZYSTANEK.mp3" lub "Ostatni przystanek na trasie linii", odtwórz następną piosenkę natychmiast
+            playNextSong();
+        }
+    });
+
+    // Rozpocznij odtwarzanie pierwszej piosenki
+    updateCurrentSongStyle(listId, currentSong);
+    audioPlayer.src = songList[currentSong];
+    audioPlayer.play();
+}
+
+   
+</script>
+
+</body>
+</html><!--
+function playSongs(songList, listId) {
+    const audioPlayer = document.getElementById('audioPlayer');
+    let currentSong = 0;
+    isPlaying = true;
+    currentListId = listId;
+    let skipDelay = false; // Dodajemy flagę, aby pominąć opóźnienie 5 sekund
+
+    // Funkcja sprawdzająca, czy piosenka jest "NASTĘPNY PRZYSTANEK.mp3"
+    function isNextStopSong(songUrl) {
+        return songUrl.endsWith("NASTĘPNY PRZYSTANEK.mp3");
+    }
+
+    // Aktualizuj styl bieżącej piosenki
+    updateCurrentSongStyle(listId, currentSong);
+
+    function playNextSong() {
+        currentSong++;
+        if (currentSong < songList.length) {
+            updateCurrentSongStyle(listId, currentSong);
+            audioPlayer.src = songList[currentSong];
+            audioPlayer.play();
+        } else {
+            isPlaying = false;
+            currentListId = null;
+            // Usuń pogrubienie po zakończeniu listy
+            if (currentSongElement) {
+                currentSongElement.classList.remove('current-song');
+            }
+        }
+    }
+
+    // Funkcja wywoływana po zakończeniu piosenki
+    audioPlayer.onended = function() {
+        if (skipDelay || !isNextStopSong(songList[currentSong])) {
+            // Jeśli flaga skipDelay jest ustawiona lub piosenka nie jest "NASTĘPNY PRZYSTANEK.mp3"
+            setTimeout(playNextSong, 2000); // 5000 ms = 5 sekund
+            skipDelay = false; // Zresetuj flagę skipDelay
+        } else {
+            // Jeśli to jest "NASTĘPNY PRZYSTANEK.mp3", odtwórz następną piosenkę natychmiast
+            playNextSong();
+        }
+    };
+
+    // Rozpocznij odtwarzanie pierwszej piosenki
+    audioPlayer.src = songList[currentSong];
+    audioPlayer.play();
+}
+-->
