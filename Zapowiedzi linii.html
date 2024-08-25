@@ -14821,7 +14821,7 @@ function playSongs(songList, listId) {
             audioPlayer.play();
         } else if (skipDelay || !isNextStopSong(songList[currentSong])) {
             // Jeśli flaga skipDelay jest ustawiona lub piosenka nie jest "NASTĘPNY PRZYSTANEK.mp3" lub "Ostatni przystanek na trasie linii"
-            setTimeout(playNextSong, 3000); // 5000 ms = 5 sekund
+            setTimeout(playNextSong, 5000); // 5000 ms = 5 sekund
             skipDelay = false; // Zresetuj flagę skipDelay
         } else {
             // Jeśli to jest "NASTĘPNY PRZYSTANEK.mp3" lub "Ostatni przystanek na trasie linii", odtwórz następną piosenkę natychmiast
