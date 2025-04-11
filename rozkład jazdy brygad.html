@@ -352,18 +352,17 @@
     </script>
 	 <style>
 	
-	body::before {
-	width: max(100%, 100%);
-   	height: max(100%, 100%);
-  	position: fixed;
-    	background-position: left top;
-	z-index:-2
-            font-family: Arial, sans-serif;
-            background-image: url(https://tspt27.webwave.dev/lib/tspt27/IMG_20200430_183745_008-02-kjpmv0b9.jpeg);
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: initial;
-        }
+	body {
+    margin: 0;
+    padding: 0;
+    min-height: 100px;
+    font-family: Arial, sans-serif;
+    background-image: url('https://tspt27.webwave.dev/lib/tspt27/IMG_20200430_183745_008-02-kjpmv0b9.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
 
         #lines {
             max-width: 85%;
