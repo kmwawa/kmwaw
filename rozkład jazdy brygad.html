@@ -37,9 +37,11 @@
         <input type="text" id="date">
         <span id="date-icon">📅</span>
         <div id="calendar-container"></div>
+		
     </div>
 	</div>
-	
+	<div id="content-container"></div>
+	 <h3 id="day-content"></h3>
     <div id="lines"></div>
      <h3 id="day-content"></h3>
 	   <input type="text" id="date">
@@ -155,8 +157,178 @@
                 ],
                 content: ""
             },
-
-
+				
+			{ dates: ["2025-04-20"],
+                lines: [
+                    { number: "1", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_1_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "2", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_2_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "3", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_3_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "4", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_4_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "6", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_6_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "7", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_7_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "9", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_9_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "10", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_10_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "11", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_11_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "13", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_13_WIELKANOC_20-04-2025.pdf", type: "tramwaj-ZK" },
+                    { number: "14", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_14_WIELKANOC_20-04-2025.pdf", type: "tramwaj-ZK" },
+                    { number: "15", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_15_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "16", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_16_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "17", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_17_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "18", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_18_WIELKANOC_20-04-2025.pdf", type: "tramwaj-ZK" },
+                    { number: "20", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_20_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "22", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_22_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "23", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_23_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "24", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_24_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                   
+                    { number: "26", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_26_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "27", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_27_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "28", file: "", type: "tramwaj-ZK" },
+                   
+                    { number: "33", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_33_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "71", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_71_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "73", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_73_WIELKANOC_23-03-2025.pdf", type: "tramwaj" },
+					{ number: "78", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_78_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+					
+                   
+					{ number: "106", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_106_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "111", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_111_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "112", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_112_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "120", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_120_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "122", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_122_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "123", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_123_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "128", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_128_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "131", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_131_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "133", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_133_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "134", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_134_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "136", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_136_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "139", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_139_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "141", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_141_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "143", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_143_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "149", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_149_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "152", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_152_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "153", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_153_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "154", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_154_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "158", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_158_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "163", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_163_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "164", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_164_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "165", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_165_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "167", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_167_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "170", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_170_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "172", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_172_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "175", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_175_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "177", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_177_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "178", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_178_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "189", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_189_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "190", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_190_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "192", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_192_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "194", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_194_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "202", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_202_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "209", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_209_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "210", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_210_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "212", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_212_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "217", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_217_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "218", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_218_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "220", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_220_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "239", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_239_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "518", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_518_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony-TZ" },
+					{ number: "521", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_521_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony" },
+					{ number: "523", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_523_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony" },
+					{ number: "527", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_527_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony" },
+					{ number: "712", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_712_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "713", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_713_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "714", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_714_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "719", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_719_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "729", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_729_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					
+                ],
+				
+                content: "linia <b>120</b> kursuje w wybranych kursach przez przystanek PRZEJEZDNA <br>linia <b>134</b> kursuje w wybranych kursach przez AUGUSTÓW <br> linia <b>143</b> wydłużona do DW. ZACHODNI <br> linia <b>154</b> kursuje w kierunku P+R AL. KRAKOWSKA przez INSTALATORÓW <br> linia <b>194</b> w kierunku CM. WOLSKI kursuje w wybranych kursach przez WAGONOWNIA <br>linia <b>202</b> kursuje przez ul. Chrzanowskiego <br> linia <b>218</b> kursuje przez SPARTAŃSKĄ <br> linai <b>518</b> kursuje przez ul. KS. POPIEŁUSZKI - AL. JANA PAWŁA II - STAWKI <br> linia <b>521</b> kursuje na trasie skróconej FALENICA - WIATRACZNA"
+            },
+ { dates: ["2025-04-21"],
+                lines: [
+                    { number: "1", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_1_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "2", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_2_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "3", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_3_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "4", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_4_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "6", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_6_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "7", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_7_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "9", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_9_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "10", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_10_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "11", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_11_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "13", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_13_WIELKANOC_20-04-2025.pdf", type: "tramwaj-ZK" },
+                    { number: "14", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_14_WIELKANOC_20-04-2025.pdf", type: "tramwaj-ZK" },
+                    { number: "15", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_15_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "16", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_16_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "17", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_17_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "18", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_18_WIELKANOC_20-04-2025.pdf", type: "tramwaj-ZK" },
+                    { number: "20", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_20_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "22", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_22_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "23", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_23_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "24", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_24_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                   
+                    { number: "26", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_26_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "27", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_27_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "28", file: "", type: "tramwaj-ZK" },
+                   
+                    { number: "33", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_33_WIELKANOC_20-04-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "71", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_71_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                    { number: "73", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_73_WIELKANOC_23-03-2025.pdf", type: "tramwaj" },
+					{ number: "78", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_78_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+					{ number: "W", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_W_WIELKANOC_20-04-2025.pdf", type: "tramwaj" },
+                   
+					{ number: "106", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_106_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "111", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_111_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "112", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_112_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "120", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_120_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "122", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_122_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "123", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_123_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "128", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_128_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "131", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_131_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "133", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_133_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "134", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_134_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "136", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_136_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "139", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_139_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "141", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_141_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "143", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_143_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "149", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_149_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "152", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_152_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "153", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_153_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "154", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_154_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "158", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_158_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "163", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_163_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "164", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_164_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "165", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_165_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "167", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_167_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "170", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_170_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "172", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_172_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "175", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_175_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "177", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_177_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "178", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_178_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "189", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_189_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "190", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_190_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "192", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_192_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "194", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_194_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "202", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_202_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "209", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_209_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "210", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_210_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "212", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_212_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "217", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_217_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "218", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_218_WIELKANOC_20-04-2025.pdf", type: "autobus-TZ" },
+					{ number: "220", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_220_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "239", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_239_WIELKANOC_20-04-2025.pdf", type: "autobus" },
+					{ number: "518", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_518_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony-TZ" },
+					{ number: "521", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_521_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony" },
+					{ number: "523", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_523_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony" },
+					{ number: "527", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_527_WIELKANOC_20-04-2025.pdf", type: "autobus-przyspieszony" },
+					{ number: "712", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_712_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "713", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_713_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "714", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_714_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "719", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_719_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					{ number: "729", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_729_WIELKANOC_20-04-2025.pdf", type: "autobus-strefowy" },
+					
+                ],
+                content: "uruchomienie linia <b>W</b> na trasie CM. WOLSKI - PL. NARUTOWICZA <br>linia <b>120</b> kursuje w wybranych kursach przez przystanek PRZEJEZDNA <br>linia <b>134</b> kursuje w wybranych kursach przez AUGUSTÓW <br> linia <b>143</b> wydłużona do DW. ZACHODNI <br> linia <b>154</b> kursuje w kierunku P+R AL. KRAKOWSKA przez INSTALATORÓW <br> linia <b>194</b> w kierunku CM. WOLSKI kursuje w wybranych kursach przez WAGONOWNIA <br>linia <b>202</b> kursuje przez ul. Chrzanowskiego <br> linia <b>218</b> kursuje przez SPARTAŃSKĄ <br> linai <b>518</b> kursuje przez ul. KS. POPIEŁUSZKI - AL. JANA PAWŁA II - STAWKI <br> linia <b>521</b> kursuje na trasie skróconej FALENICA - WIATRACZNA"
+            },
 
 
 
@@ -194,161 +366,199 @@
 	   ];
 
       
-    const dateInput = document.getElementById("date");
-    const dayButtonsDiv = document.getElementById("day-buttons");
-    const dateIcon = document.getElementById("date-icon");
-    const calendarContainer = document.getElementById("calendar-container");
-    const linesContainer = document.getElementById("lines");
-    let dayButtons = [];
-    let fp = null;
+ const dateInput = document.getElementById("date");
+const dayButtonsDiv = document.getElementById("day-buttons");
+const dateIcon = document.getElementById("date-icon");
+const calendarContainer = document.getElementById("calendar-container");
+const linesContainer = document.getElementById("lines");
+const contentContainer = document.getElementById("content");
+let fp = null;
+let dayButtons = [];
 
-    function getLocalDateString(date = new Date()) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
+
+function getLocalDateString(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function generateDayButtons(date) {
+    dayButtonsDiv.innerHTML = "";
+    dayButtons = [];
+    const currentDate = date ? new Date(date) : new Date();
+
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(currentDate);
+        date.setDate(currentDate.getDate() + i);
+        const dateString = getLocalDateString(date);
+        const dayName = getDayName(date.getDay());
+        const btn = document.createElement("button");
+        btn.className = "day-button";
+        btn.innerHTML = `${date.getDate()} ${getMonthNameShort(date.getMonth())} (${getDayNameShort(date.getDay())})`;
+        btn.style.width = '120px';
+        btn.onclick = () => {
+            dateInput.value = dateString;
+            updateLinesAndContent();
+            selectDayButton(btn);
+        };
+        dayButtonsDiv.appendChild(btn);
+        dayButtons.push(btn);
     }
 
-    function generateDayButtons(date) {
-        dayButtonsDiv.innerHTML = "";
-        dayButtons = [];
-        const currentDate = date ? new Date(date) : new Date();
+    selectDayButton(dayButtons[0]);
+}
 
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(currentDate);
-            date.setDate(currentDate.getDate() + i);
-            const dateString = getLocalDateString(date);
-            const dayName = getDayName(date.getDay());
-            const btn = document.createElement("button");
-            btn.className = "day-button";
-            btn.innerHTML = `${date.getDate()} ${getMonthNameShort(date.getMonth())} (${getDayNameShort(date.getDay())})`;
-            btn.style.width = '120px';
-            btn.onclick = () => {
-                dateInput.value = dateString;
+function getDayName(dayIndex) {
+    const days = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+    return days[dayIndex];
+}
+
+function getDayNameShort(dayIndex) {
+    const days = ["nd", "pon", "wt", "śr", "czw", "pt", "sob"];
+    return days[dayIndex];
+}
+
+function getMonthNameShort(monthIndex) {
+    const months = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"];
+    return months[monthIndex];
+}
+
+function selectDayButton(selectedButton) {
+    dayButtons.forEach(btn => btn.classList.remove("selected"));
+    selectedButton.classList.add("selected");
+}
+
+function getMonthIndexFromShort(monthShort) {
+    const months = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"];
+    return months.indexOf(monthShort);
+}
+
+function initializeFlatpickr() {
+    fp = flatpickr(calendarContainer, {
+        dateFormat: "Y-m-d",
+        locale: "pl",
+        onClose: function(selectedDates, dateStr) {
+            if (selectedDates.length > 0) {
+                dateInput.value = dateStr;
                 updateLinesAndContent();
-                selectDayButton(btn);
-            };
-            dayButtonsDiv.appendChild(btn);
-            dayButtons.push(btn);
-        }
-
-        selectDayButton(dayButtons[0]);
-    }
-
-    function getDayName(dayIndex) {
-        const days = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
-        return days[dayIndex];
-    }
-
-    function getDayNameShort(dayIndex) {
-        const days = ["nd", "pon", "wt", "śr", "czw", "pt", "sob"];
-        return days[dayIndex];
-    }
-
-    function getMonthNameShort(monthIndex) {
-        const months = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"];
-        return months[monthIndex];
-    }
-
-    function selectDayButton(selectedButton) {
-        dayButtons.forEach(btn => btn.classList.remove("selected"));
-        selectedButton.classList.add("selected");
-    }
-
-    function getMonthIndexFromShort(monthShort) {
-        const months = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"];
-        return months.indexOf(monthShort);
-    }
-
-    function initializeFlatpickr() {
-        fp = flatpickr(calendarContainer, {
-            dateFormat: "Y-m-d",
-            locale: "pl",
-            onClose: function(selectedDates, dateStr) {
-                if (selectedDates.length > 0) {
-                    dateInput.value = dateStr;
-                    updateLinesAndContent();
-                    calendarContainer.style.display = "none";
-                    generateDayButtons(dateStr);
-                }
+                calendarContainer.style.display = "none";
+                generateDayButtons(dateStr);
             }
-        });
-        calendarContainer.style.display = "none";
-    }
-
-    dateIcon.addEventListener("click", () => {
-        calendarContainer.style.display = calendarContainer.style.display === "none" ? "block" : "none";
-        if (calendarContainer.style.display === "block" && fp) {
-            fp.open();
         }
     });
+    calendarContainer.style.display = "none";
+}
 
-    document.getElementById("prev-week").addEventListener("click", () => {
-        const firstDay = parseInt(dayButtons[0].innerText.split(' ')[0], 10);
-        const month = getMonthIndexFromShort(dayButtons[0].innerText.split(' ')[1]);
-        const year = parseInt(dateInput.value.split('-')[0], 10);
+dateIcon.addEventListener("click", () => {
+    calendarContainer.style.display = calendarContainer.style.display === "none" ? "block" : "none";
+    if (calendarContainer.style.display === "block" && fp) {
+        fp.open();
+    }
+});
 
-        const prevDate = new Date(year, month, firstDay);
-        prevDate.setDate(prevDate.getDate() - 7);
-        generateDayButtons(prevDate);
-        dateInput.value = getLocalDateString(prevDate);
-        updateLinesAndContent();
-    });
+document.getElementById("prev-week").addEventListener("click", () => {
+    const firstDay = parseInt(dayButtons[0].innerText.split(' ')[0], 10);
+    const month = getMonthIndexFromShort(dayButtons[0].innerText.split(' ')[1]);
+    const year = parseInt(dateInput.value.split('-')[0], 10);
 
-    document.getElementById("next-week").addEventListener("click", () => {
-        const firstDay = parseInt(dayButtons[0].innerText.split(' ')[0], 10);
-        const month = getMonthIndexFromShort(dayButtons[0].innerText.split(' ')[1]);
-        const year = parseInt(dateInput.value.split('-')[0], 10);
+    const prevDate = new Date(year, month, firstDay);
+    prevDate.setDate(prevDate.getDate() - 7);
+    generateDayButtons(prevDate);
+    dateInput.value = getLocalDateString(prevDate);
+    updateLinesAndContent();
+});
 
-        const nextDate = new Date(year, month, firstDay);
-        nextDate.setDate(nextDate.getDate() + 7);
-        generateDayButtons(nextDate);
-        dateInput.value = getLocalDateString(nextDate);
-        updateLinesAndContent();
-    });
+document.getElementById("next-week").addEventListener("click", () => {
+    const firstDay = parseInt(dayButtons[0].innerText.split(' ')[0], 10);
+    const month = getMonthIndexFromShort(dayButtons[0].innerText.split(' ')[1]);
+    const year = parseInt(dateInput.value.split('-')[0], 10);
 
-    function updateLinesAndContent() {
-        const date = dateInput.value;
-        linesContainer.innerHTML = "";
-        let lineBreakInserted = false;
+    const nextDate = new Date(year, month, firstDay);
+    nextDate.setDate(nextDate.getDate() + 7);
+    generateDayButtons(nextDate);
+    dateInput.value = getLocalDateString(nextDate);
+    updateLinesAndContent();
+});
 
-        const entry = schedule.find(item => item.dates.some(d =>
-            (typeof d === "string" && d === date) ||
-            (typeof d === "object" && date >= d.start && date <= d.end)
-        ));
+function updateLinesAndContent() {
+    const date = dateInput.value;
+    linesContainer.innerHTML = ""; // Czyścimy zawartość kontenera
+	const contentContainer = document.getElementById("content-container"); // Kontener na komunikat
+    contentContainer.innerHTML = ""; // Czyścimy poprzedni komunikat
+	
 
-        if (entry && entry.lines.length > 0) {
-            entry.lines.forEach(line => {
-                const num = parseInt(line.number, 10);
+    let addedLineBreak = {  // Obiekt trzymający informacje, czy dodano przerwę dla przedziału
+        "70-99": false,
+        "100-299": false,
+        "300-399": false,
+        "400-499": false,
+        "500-599": false,
+		"700-799": false,
+		"800-899": false,
+		"900-999": false,
+"w": false	
+    };
 
-                if (!lineBreakInserted && (num >= 70 || num >= 100)) {
-                    linesContainer.appendChild(document.createElement("br"));
-                    linesContainer.appendChild(document.createElement("br"));
-                    lineBreakInserted = true;
-                }
+    const entry = schedule.find(item => item.dates.some(d =>
+        (typeof d === "string" && d === date) ||
+        (typeof d === "object" && date >= d.start && date <= d.end)
+    ));
 
-                if (line.number.startsWith("100")) {
-                    const spacer = document.createElement("div");
+   if (entry && entry.lines.length > 0) {
+        entry.lines.forEach((line) => {
+            const number = line.number;
+            let range = null;
+
+            // Obsługa przedziałów numerycznych
+            if (!isNaN(parseInt(number))) {
+                const num = parseInt(number, 10);
+                if (num >= 70 && num <= 99) range = "70-99";
+                else if (num >= 100 && num <= 299) range = "100-299";
+                else if (num >= 300 && num <= 399) range = "300-399";
+                else if (num >= 400 && num <= 499) range = "400-499";
+                else if (num >= 500 && num <= 599) range = "500-599";
+				else if (num >= 700 && num <= 799) range = "700-799";
+                else if (num >= 800 && num <= 899) range = "800-899";
+                else if (num >= 900 && num <= 999) range = "900-999";
+            }
+
+            // Obsługa linii zaczynających się na "w" (np. "w1", "w2")
+            if (typeof number === "string" && number.toLowerCase().startsWith("w")) {
+                range = "w";
+            }
+
+            // Jeśli dla tego przedziału jeszcze nie dodano przerwy, dodajemy ją
+            if (range && !addedLineBreak[range]) {
+                
+				const spacer = document.createElement("div");
                     spacer.style.marginTop = "40px";
                     linesContainer.appendChild(spacer);
-                }
+                addedLineBreak[range] = true; // Ustawiamy, że dla tego przedziału przerwa została dodana
+            }
 
-                const button = document.createElement("button");
-                button.textContent = line.number;
-                button.className = `line-button ${line.type}`;
-                button.onclick = () => window.open(line.file, "_blank");
-                linesContainer.appendChild(button);
-            });
-        } else {
-            linesContainer.innerHTML = '<p class="brak-danych">Brak danych na ten dzień.</p>';
-        }
+            // Tworzymy przycisk dla każdej linii
+            const button = document.createElement("button");
+            button.textContent = line.number;
+            button.className = `line-button ${line.type}`;
+            button.onclick = () => window.open(line.file, "_blank");
+            linesContainer.appendChild(button);
+        });
+		
+		 // Wyświetlenie komunikatu z `content`
+        contentContainer.innerHTML = entry.content;
+    } else {
+        linesContainer.innerHTML = '<p class="brak-danych">Brak danych na ten dzień.</p>';
     }
+}
 
-    // Inicjalizacja
-    generateDayButtons();
+
+// Inicjalizacja
+generateDayButtons();
     initializeFlatpickr();
     dateInput.value = getLocalDateString();
     updateLinesAndContent();
+
     </script>
 	 <style>
 	
@@ -589,6 +799,17 @@
         #day-content {
             margin-top: 20px;
         }
+#content-container {
+ margin-top: 20px;
+ background-color: red;
+ color: white;
+ width: 50%;
+ margin-top: 20px;
+margin-left: auto;
+margin-right: auto;
+padding-left: 10px;
+}
+
 
         #tabela-dni {
             padding-top: 10px;
