@@ -447,7 +447,7 @@
                     { number: "22", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_22_DP_22-03-2025.pdf", type: "tramwaj-TZ" },
                     { number: "23", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_23_DP_07-04-2025.pdf", type: "tramwaj" },
                     { number: "24", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_24_DP_22-03-2025.pdf", type: "tramwaj-TZ" },
-                    { number: "25", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_25_DP_22-03-2025.pdf", type: "tramwaj-TZ" },
+                    { number: "25", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_25_DP_22-03-2025.pdf", type: "tramwaj-okresowy-TZ" },
                     { number: "26", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_26_DP_01-03-2025.pdf", type: "tramwaj" },
                     { number: "27", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_27_DP_22-03-2025.pdf", type: "tramwaj-TZ" },
                     { number: "28", file: "", type: "tramwaj-ZK" },
@@ -772,10 +772,12 @@ generateDayButtons();
         }
 
         /* Kolory różnych typów linii */
-        .tramwaj    { border-bottom: 13px solid red; }
-		.tramwaj-TZ { border-bottom: 13px solid red;background-color: white;position: relative;width: 70px;height: 56px;display: inline-block; }
-        .tramwaj-ZK { border-bottom: 13px solid red;background-color: white; position: relative;width: 70px;height: 56px;display: inline-block; color: black; border-bottom-color: rgb(255,0,0,);}
+        .tramwaj    { border-bottom: 13px solid red;}
+		.tramwaj-TZ { border-bottom: 13px solid red;}
+        .tramwaj-ZK { border-bottom: 13px solid red;}
 		.tramwaj-okresowy {border-bottom: 13px solid red;}
+		.tramwaj-okresowy-TZ {border-bottom: 13px solid red;}
+		.tramwaj-okresowy-ZK {border-bottom: 13px solid red;}
 		.autobus    { border-bottom: 13px solid #990066; }
 		.autobus-TZ { border-bottom: 13px solid #990066; background-color: white;}
 		.autobus-ZK { border-bottom: 13px solid #990066; background-color: white; color: white;}
@@ -829,6 +831,15 @@ generateDayButtons();
 		.tramwaj-okresowy::before,
 		.autobus-okresowy::before
 		{content: "OKRESOWO"; position: absolute;bottom: -24px; left: 50%;color: white;font-size: 8.5px;transform: translateX(-50%);font-weight: bold;}
+		
+		.tramwaj-okresowy-TZ::before,
+		.autobus-okresowy-TZ::before
+		{content: "";display: block;width: 100%;height: 100%;background-image: url("https://kmwawa.github.io/kmwaw/trasa-zmieniona.png");background-size: contain;background-position: center;background-repeat: no-repeat;transform: rotate(20deg); position: absolute;top: 0;	left: 0;z-index: 0;opacity:0.15;	transition: opacity 0.1s ease; /* Płynne przejście */}
+		
+		
+		.tramwaj-okresowy-TZ::after,
+		.autobus-okresowy-TZ::after 
+		{  content: "OKRESOWO"; position: absolute; bottom: -24px; left: 50%;color: white; font-size: 8.5px; transform: translateX(-50%); font-weight: bold; z-index: 1;}
 
 		.tramwaj-TZ:hover,
 		.tramwaj-okresowy-TZ:hover,
@@ -845,9 +856,9 @@ generateDayButtons();
 		{background-color: #000066; z-index: 2; font-weight: 500;}
 		
 		.tramwaj-TZ:hover::before,
-		.tramwaj-okresowy-TZ::before,
+		.tramwaj-okresowy-TZ:hover::before,
 		.autobus-TZ:hover::before,
-		.autobus-okresowy-TZ::before,
+		.autobus-okresowy-TZ:hover::before,
 		.autobus-przyspieszony-TZ:hover::before,
 		.autobus-strefowy-TZ:hover::before,
 		.autobus-strefowy-uzu-TZ:hover::before,
