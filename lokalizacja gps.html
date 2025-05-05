@@ -6977,7 +6977,8 @@
     ];
 
   
- function getDistance(lat1, lon1, lat2, lon2) {
+ 
+    function getDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const toRad = deg => deg * Math.PI / 180;
       const dLat = toRad(lat2 - lat1);
@@ -6991,9 +6992,9 @@
 
     function speakMessage(text) {
       if ('speechSynthesis' in window) {
-        speechSynthesis.cancel();
         const msg = new SpeechSynthesisUtterance(text);
         msg.lang = "pl-PL";
+        speechSynthesis.cancel();  // przerywa poprzednią zapowiedź
         speechSynthesis.speak(msg);
         console.log("🗣️ Zapowiedź:", text);
       }
@@ -7003,7 +7004,7 @@
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
 
-      let statusText = `📍 Twoja pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+      let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
 
       for (const [name, stopLat, stopLon] of stops) {
         const distance = getDistance(lat, lon, stopLat, stopLon);
@@ -7029,15 +7030,14 @@
         return;
       }
 
-      document.getElementById('status').textContent = "🔄 Śledzenie rozpoczęte...";
+      document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
 
-      setInterval(() => {
-        navigator.geolocation.getCurrentPosition(checkLocation, handleError, {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-        });
-      }, 15000); // Co 15 sekund
+      // Stałe śledzenie lokalizacji (automatycznie odświeżane)
+      navigator.geolocation.watchPosition(checkLocation, handleError, {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000
+      });
     }
   </script>
 </body>
