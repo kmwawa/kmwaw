@@ -24,9 +24,9 @@
   <pre id="status">Czekam na uruchomienie...</pre>
 
   <script>
-  const announcedStops = new Set();
+ const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
     const stops = [
-   
+      ["Włochy-Ratusz", 52.28673546225148, 21.025814034098982, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia", 52.195985239324, 20.963193738055, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia", 52.195241630708, 20.962546974701, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia", 52.195250699181, 20.96481064644, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
@@ -6981,11 +6981,10 @@
 
   
  
-    // Zapowiedź ogólna (intro)
-    const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
+   const announcedStops = new Set();
 
     function getDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3;
+      const R = 6371e3; // Promień Ziemi w metrach
       const toRad = deg => deg * Math.PI / 180;
       const dLat = toRad(lat2 - lat1);
       const dLon = toRad(lon2 - lon1);
@@ -7013,13 +7012,21 @@
 
       let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
 
-      for (const [name, stopLat, stopLon, stopAudioUrl] of stops) {
-        const distance = getDistance(lat, lon, stopLat, stopLon);
-        statusText += `➡️ ${name}: ${distance.toFixed(1)} m\n`;
+      // Oblicz odległości i posortuj przystanki
+      const sortedStops = stops
+        .map(([name, stopLat, stopLon, stopAudioUrl]) => {
+          const distance = getDistance(lat, lon, stopLat, stopLon);
+          return { name, stopLat, stopLon, stopAudioUrl, distance };
+        })
+        .sort((a, b) => a.distance - b.distance);
 
-        if (distance <= 20 && !announcedStops.has(name)) {
-          playSequence(introAudioUrl, stopAudioUrl);
-          announcedStops.add(name);
+      // Przetwarzaj posortowaną listę
+      for (const stop of sortedStops) {
+        statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
+
+        if (stop.distance <= 20 && !announcedStops.has(stop.name)) {
+          playSequence(introAudioUrl, stop.stopAudioUrl);
+          announcedStops.add(stop.name);
         }
       }
 
