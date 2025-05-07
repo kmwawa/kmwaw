@@ -6979,79 +6979,88 @@
 
 
     ];
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371e3; // Promień Ziemi w metrach
+  const toRad = deg => deg * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
-  
+function playSequence(introUrl, stopUrl) {
+  const introAudio = new Audio(introUrl);
+  const stopAudio = new Audio(stopUrl);
+
+  introAudio.play().then(() => {
+    introAudio.onended = () => {
+      stopAudio.play().catch(e => console.error("Błąd odtwarzania przystanku:", e));
+    };
+  }).catch(e => console.error("Błąd odtwarzania intro:", e));
+}
+
+function checkLocation(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+
+  let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+
+  const sortedStops = stops
+    .map(([name, stopLat, stopLon, stopAudioUrl]) => {
+      const distance = getDistance(lat, lon, stopLat, stopLon);
+      return { name, stopLat, stopLon, stopAudioUrl, distance };
+    })
+    .sort((a, b) => a.distance - b.distance);
+
+  for (const stop of sortedStops) {
+    statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
+
+    if (stop.distance <= 20 && !announcedStops.has(stop.name)) {
+      playSequence(introAudioUrl, stop.stopAudioUrl);
+      announcedStops.add(stop.name);
+    }
+  }
+
+  document.getElementById('status').textContent = statusText;
+}
+
+function handleError(error) {
+  document.getElementById('status').textContent = "❌ Błąd geolokalizacji: " + error.message;
+}
+
+function startTracking() {
+  if (!navigator.geolocation) {
+    alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
+    return;
+  }
+  document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
+
+  // Pierwsze pobranie pozycji
+  navigator.geolocation.getCurrentPosition(checkLocation, handleError, {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 10000
+  });
+
+  // Interwał co 7 sekund
+  trackingInterval = setInterval(() => {
+    navigator.geolocation.getCurrentPosition(checkLocation, handleError, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000
+    });
+  }, 7000);
+}
+
+function stopTracking() {
+  clearInterval(trackingInterval);
+  document.getElementById('status').textContent = "🛑 Śledzenie zatrzymane.";
+}
  
-   const announcedStops = new Set();
-
-    function getDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3; // Promień Ziemi w metrach
-      const toRad = deg => deg * Math.PI / 180;
-      const dLat = toRad(lat2 - lat1);
-      const dLon = toRad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) ** 2 +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-                Math.sin(dLon / 2) ** 2;
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return R * c;
-    }
-
-    function playSequence(introUrl, stopUrl) {
-      const introAudio = new Audio(introUrl);
-      const stopAudio = new Audio(stopUrl);
-
-      introAudio.play().then(() => {
-        introAudio.onended = () => {
-          stopAudio.play().catch(e => console.error("Błąd odtwarzania przystanku:", e));
-        };
-      }).catch(e => console.error("Błąd odtwarzania intro:", e));
-    }
-
-    function checkLocation(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-
-      let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
-
-      // Oblicz odległości i posortuj przystanki
-      const sortedStops = stops
-        .map(([name, stopLat, stopLon, stopAudioUrl]) => {
-          const distance = getDistance(lat, lon, stopLat, stopLon);
-          return { name, stopLat, stopLon, stopAudioUrl, distance };
-        })
-        .sort((a, b) => a.distance - b.distance);
-
-      // Przetwarzaj posortowaną listę
-      for (const stop of sortedStops) {
-        statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
-
-        if (stop.distance <= 20 && !announcedStops.has(stop.name)) {
-          playSequence(introAudioUrl, stop.stopAudioUrl);
-          announcedStops.add(stop.name);
-        }
-      }
-
-      document.getElementById('status').textContent = statusText;
-    }
-
-    function handleError(error) {
-      document.getElementById('status').textContent = "❌ Błąd geolokalizacji: " + error.message;
-    }
-
-    function startTracking() {
-      if (!navigator.geolocation) {
-        alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
-        return;
-      }
-
-      document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
-
-      navigator.geolocation.watchPosition(checkLocation, handleError, {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 10000
-      });
-    }
+   
   </script>
 </body>
 </html>
