@@ -24,7 +24,8 @@
   <pre id="status">Czekam na uruchomienie...</pre>
 
   <script>
- const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
+ const announcedStops = new Set();
+  let trackingInterval;
     const stops = [
       ["Włochy-Ratusz", 52.28673546225148, 21.025814034098982, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia 01", 52.195985239324, 20.963193738055, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
@@ -6979,88 +6980,85 @@
 
 
     ];
-function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371e3; // Promień Ziemi w metrach
-  const toRad = deg => deg * Math.PI / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a = Math.sin(dLat / 2) ** 2 +
-            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-            Math.sin(dLon / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
 
-function playSequence(introUrl, stopUrl) {
-  const introAudio = new Audio(introUrl);
-  const stopAudio = new Audio(stopUrl);
-
-  introAudio.play().then(() => {
-    introAudio.onended = () => {
-      stopAudio.play().catch(e => console.error("Błąd odtwarzania przystanku:", e));
-    };
-  }).catch(e => console.error("Błąd odtwarzania intro:", e));
-}
-
-function checkLocation(position) {
-  const lat = position.coords.latitude;
-  const lon = position.coords.longitude;
-
-  let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
-
-  const sortedStops = stops
-    .map(([name, stopLat, stopLon, stopAudioUrl]) => {
-      const distance = getDistance(lat, lon, stopLat, stopLon);
-      return { name, stopLat, stopLon, stopAudioUrl, distance };
-    })
-    .sort((a, b) => a.distance - b.distance);
-
-  for (const stop of sortedStops) {
-    statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
-
-    if (stop.distance <= 40 && !announcedStops.has(stop.name)) {
-      playSequence(introAudioUrl, stop.stopAudioUrl);
-      announcedStops.add(stop.name);
-    }
-  }
-
-  document.getElementById('status').textContent = statusText;
-}
-
-function handleError(error) {
-  document.getElementById('status').textContent = "❌ Błąd geolokalizacji: " + error.message;
-}
-
-function startTracking() {
-  if (!navigator.geolocation) {
-    alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
-    return;
-  }
-  document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
-
-  // Pierwsze pobranie pozycji
-  navigator.geolocation.getCurrentPosition(checkLocation, handleError, {
-    enableHighAccuracy: true,
-    maximumAge: 0,
-    timeout: 10000
-  });
-
-  // Interwał co 7 sekund
-  trackingInterval = setInterval(() => {
-    navigator.geolocation.getCurrentPosition(checkLocation, handleError, {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 10000
-    });
-  }, 5000);
-}
-
-function stopTracking() {
-  clearInterval(trackingInterval);
-  document.getElementById('status').textContent = "🛑 Śledzenie zatrzymane.";
-}
+  
  
-   
+   const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3"; // Ścieżka do pliku audio intro
+
+  function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3;
+    const toRad = deg => deg * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  function playSequence(introUrl, stopUrl) {
+    const introAudio = new Audio(introUrl);
+    const stopAudio = new Audio(stopUrl);
+
+    introAudio.play().then(() => {
+      introAudio.onended = () => {
+        stopAudio.play().catch(e => console.error("Błąd odtwarzania przystanku:", e));
+      };
+    }).catch(e => console.error("Błąd odtwarzania intro:", e));
+  }
+
+  function checkLocation(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+
+    const sortedStops = stops
+      .map(([name, stopLat, stopLon, stopAudioUrl]) => {
+        const distance = getDistance(lat, lon, stopLat, stopLon);
+        return { name, stopLat, stopLon, stopAudioUrl, distance };
+      })
+      .sort((a, b) => a.distance - b.distance);
+
+    for (const stop of sortedStops) {
+      statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
+
+      if (stop.distance <= 60 && !announcedStops.has(stop.name)) {
+        playSequence(introAudioUrl, stop.stopAudioUrl);
+        announcedStops.add(stop.name);
+      }
+    }
+
+    document.getElementById('status').textContent = statusText;
+  }
+
+  function handleError(error) {
+    document.getElementById('status').textContent = "❌ Błąd geolokalizacji: " + error.message;
+  }
+
+  function startTracking() {
+    if (!navigator.geolocation) {
+      alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
+      return;
+    }
+
+    document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
+
+    trackingInterval = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(checkLocation, handleError, {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000
+      });
+    }, 3000); // Co 3 sekundy
+  }
+
+  function stopTracking() {
+    clearInterval(trackingInterval);
+    document.getElementById('status').textContent = "⏹️ Śledzenie zatrzymane.";
+  }
   </script>
+
 </body>
 </html>
