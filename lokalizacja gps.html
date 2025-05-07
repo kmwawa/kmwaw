@@ -7018,7 +7018,7 @@ function checkLocation(position) {
   for (const stop of sortedStops) {
     statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
 
-    if (stop.distance <= 20 && !announcedStops.has(stop.name)) {
+    if (stop.distance <= 40 && !announcedStops.has(stop.name)) {
       playSequence(introAudioUrl, stop.stopAudioUrl);
       announcedStops.add(stop.name);
     }
