@@ -7024,7 +7024,7 @@
     for (const stop of sortedStops) {
       statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
 
-      if (stop.distance <= 60 && !announcedStops.has(stop.name)) {
+      if (stop.distance <= 35 && !announcedStops.has(stop.name)) {
         playSequence(introAudioUrl, stop.stopAudioUrl);
         announcedStops.add(stop.name);
       }
