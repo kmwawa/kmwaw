@@ -1,50 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Mapa przystanków</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <title>Zapowiedzi przystanków</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
     #map {
       height: 600px;
       width: 90%;
-	  align-items: center; 
-	  margin-left: auto;
-	  margin-right: auto;
+      margin: 20px auto;
     }
-    #stop-list {
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
+    #controls {
+      margin: 10px;
     }
-	 ul {
-      list-style: none;
+    ul {
+      list-style-type: none;
       padding: 0;
     }
   </style>
 </head>
 <body>
+  <h1>Zapowiedzi przystanków</h1>
 
-<!-- HTML -->
-<div id="manual-stop-form">
-  <input type="text" id="stop-name" placeholder="Nazwa przystanku">
-  <button onclick="addManualStop()">Dodaj przystanek</button>
-</div>
+  <div id="controls">
+    <input list="stop-options" id="stop-name" placeholder="Wybierz przystanek" />
+    <datalist id="stop-options"></datalist>
+    <button onclick="addManualStop()">➕ Dodaj przystanek do listy</button>
+    <button onclick="startAnnouncements()">▶️ Start zapowiedzi</button>
+    <button onclick="clearStopList()">🗑 Wyczyść listę</button>
+  </div>
 
-<button onclick="startAnnouncements()">▶️ Włącz zapowiedzi</button>
-<button onclick="clearStopList()">🗑️ Wyczyść listę</button>
+  <div id="map"></div>
 
-<ul id="stop-list"></ul>
-<pre id="status">📍 Oczekiwanie na pozycję GPS...</pre>
-<div id="map"></div>
+  <h3>Wybrane przystanki:</h3>
+  <ul id="stop-list"></ul>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-  const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
-  const nextStopAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3";
+  <pre id="status">📍 Oczekiwanie na lokalizację...</pre>
 
-  const stops = [
-  ["1 Sierpnia 01", 52.195985239324, 20.963193738055, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
+    const nextStopAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3";
+
+    const stops = [
+    ["1 Sierpnia 01", 52.195985239324, 20.963193738055, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia 02", 52.195241630708, 20.962546974701, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia 03", 52.195250699181, 20.96481064644, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1. Praskiego Pułku 01", 52.223888771067, 21.221928477989, "https://kmwawa.github.io/zapowiedzi/1. Praskiego Pułku.mp3"],
@@ -6990,139 +6993,142 @@
 ["Żyzna 02", 52.230712405691, 20.779674636358, "https://kmwawa.github.io/zapowiedzi-4/Żyzna.mp3"]
 
 
-  ];
+    ];
 
-  const selectedStops = [];
-  const announcedStops = new Set();
-  let watchId = null;
-  let announcementsEnabled = false;
+    const selectedStops = [];
+    const announcedStops = new Set();
+    let watchId = null;
+    let announcementsEnabled = false;
 
-  const map = L.map('map').setView([52.2297, 21.0122], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap'
-  }).addTo(map);
+    const map = L.map('map').setView([52.2297, 21.0122], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
 
-  stops.forEach(([name, lat, lon, url]) => {
-    const marker = L.marker([lat, lon]).addTo(map);
-    marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
-    marker.on('click', () => addStopToList(name));
-  });
-
-  function addStopToList(name) {
-    if (selectedStops.find(s => s[0] === name)) return;
-    const stop = stops.find(s => s[0] === name);
-    if (!stop) return;
-    selectedStops.push(stop);
-    const item = document.createElement('li');
-    item.textContent = name;
-    document.getElementById('stop-list').appendChild(item);
-  }
-
-  function clearStopList() {
-    selectedStops.length = 0;
-    document.getElementById('stop-list').innerHTML = '';
-    announcedStops.clear();
-  }
-
-  function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371000;
-    const toRad = deg => deg * Math.PI / 180;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 +
-              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-              Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
-
-  function playSequence(url1, url2) {
-    const a1 = new Audio(url1);
-    const a2 = new Audio(url2);
-    a1.play().then(() => {
-      a1.onended = () => a2.play();
-    }).catch(console.error);
-  }
-
-  function checkLocation(position) {
-    const { latitude: lat, longitude: lon } = position.coords;
-    let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
-
-    if (!announcementsEnabled) {
-      status += "🔇 Zapowiedzi nieaktywne.";
-      document.getElementById('status').textContent = status;
-      return;
-    }
-
-    let closest = null;
-    let closestDist = Infinity;
-
-    for (const [name, stopLat, stopLon, stopUrl] of selectedStops) {
-      const dist = getDistance(lat, lon, stopLat, stopLon);
-      status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
-
-      if (dist < closestDist) {
-        closestDist = dist;
-        closest = [name, stopUrl];
-      }
-
-      if (dist <= 60 && !announcedStops.has(name)) {
-        announcedStops.add(name);
-        playSequence(introAudioUrl, stopUrl);
-        break;
-      }
-    }
-
-    if (closest && closestDist > 60 && !announcedStops.has(closest[0])) {
-      announcedStops.add(closest[0]);
-      playSequence(nextStopAudioUrl, closest[1]);
-    }
-
-    document.getElementById('status').textContent = status;
-  }
-
-  function handleError(err) {
-    document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
-  }
-
-  function startAnnouncements() {
-    if (watchId !== null) return;
-    announcementsEnabled = true;
-    watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 10000
-    });
-    document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte. Oczekuję w pobliżu przystanków...";
-  }
-
-  function addManualStop() {
-    const name = document.getElementById('stop-name').value.trim();
-    if (!name) {
-      alert("Wpisz nazwę przystanku.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(pos => {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
-      const url = "https://kmwawa.github.io/zapowiedzi/DOMYŚLNA.mp3";
-
-      const newStop = [name, lat, lon, url];
-      stops.push(newStop);
-
+    stops.forEach(([name, lat, lon, url]) => {
       const marker = L.marker([lat, lon]).addTo(map);
       marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
       marker.on('click', () => addStopToList(name));
-
-      document.getElementById('stop-name').value = '';
-
-    }, err => {
-      alert("Nie udało się pobrać lokalizacji: " + err.message);
     });
-  }
-</script>
 
+    function addStopToList(name) {
+      if (selectedStops.find(s => s[0] === name)) return;
+      const stop = stops.find(s => s[0] === name);
+      if (!stop) return;
+      selectedStops.push(stop);
+      const item = document.createElement('li');
+      item.textContent = name;
+      document.getElementById('stop-list').appendChild(item);
+    }
+
+    function clearStopList() {
+      selectedStops.length = 0;
+      document.getElementById('stop-list').innerHTML = '';
+      announcedStops.clear();
+    }
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const toRad = deg => deg * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    function playSequence(url1, url2) {
+      const a1 = new Audio(url1);
+      const a2 = new Audio(url2);
+      a1.play().then(() => {
+        a1.onended = () => a2.play();
+      }).catch(console.error);
+    }
+
+    function checkLocation(position) {
+      const { latitude: lat, longitude: lon } = position.coords;
+      let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+
+      if (!announcementsEnabled) {
+        status += "🔇 Zapowiedzi nieaktywne.";
+        document.getElementById('status').textContent = status;
+        return;
+      }
+
+      let closest = null;
+      let closestDist = Infinity;
+
+      for (const [name, stopLat, stopLon, stopUrl] of selectedStops) {
+        const dist = getDistance(lat, lon, stopLat, stopLon);
+        status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
+
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = [name, stopUrl];
+        }
+
+        if (dist <= 60 && !announcedStops.has(name)) {
+          announcedStops.add(name);
+          playSequence(introAudioUrl, stopUrl);
+          document.getElementById('status').textContent = status;
+          return;
+        }
+      }
+
+      // jeśli dalej niż 60 m
+      if (closest && closestDist > 60 && !announcedStops.has(closest[0])) {
+        announcedStops.add(closest[0]);
+        playSequence(nextStopAudioUrl, closest[1]);
+      }
+
+      document.getElementById('status').textContent = status;
+    }
+
+    function handleError(err) {
+      document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
+    }
+
+    function startAnnouncements() {
+      if (watchId !== null) return;
+      announcementsEnabled = true;
+      watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000
+      });
+      document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte. Oczekuję w pobliżu przystanków...";
+    }
+
+    function addManualStop() {
+      const name = document.getElementById('stop-name').value.trim();
+      if (!name) {
+        alert("Wpisz nazwę przystanku.");
+        return;
+      }
+
+      const existing = stops.find(s => s[0] === name);
+      if (!existing) {
+        alert("Nie znaleziono takiego przystanku na liście.");
+        return;
+      }
+
+      addStopToList(name);
+      document.getElementById('stop-name').value = '';
+    }
+
+    function populateStopOptions() {
+      const datalist = document.getElementById('stop-options');
+      stops.forEach(([name]) => {
+        const option = document.createElement('option');
+        option.value = name;
+        datalist.appendChild(option);
+      });
+    }
+
+    populateStopOptions();
+  </script>
 </body>
 </html>
