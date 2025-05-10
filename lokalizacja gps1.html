@@ -17,26 +17,33 @@
       padding: 10px;
       border: 1px solid #ccc;
     }
+	 ul {
+      list-style: none;
+      padding: 0;
+    }
   </style>
 </head>
 <body>
 
 <!-- HTML -->
-<div id="map"></div>
-<ul id="stop-list"></ul>
+<div id="manual-stop-form">
+  <input type="text" id="stop-name" placeholder="Nazwa przystanku">
+  <button onclick="addManualStop()">Dodaj przystanek</button>
+</div>
+
+<button onclick="startAnnouncements()">▶️ Włącz zapowiedzi</button>
 <button onclick="clearStopList()">🗑️ Wyczyść listę</button>
-<button onclick="startAnnouncements()">🔊 Włącz zapowiedzi</button>
-<p id="status">📍 Status GPS...</p>
 
-<!-- Leaflet CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<ul id="stop-list"></ul>
+<pre id="status">📍 Oczekiwanie na pozycję GPS...</pre>
+<div id="map"></div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
- const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
-const nextStopAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3"; // Dodana zapowiedź następnego przystanku
+  const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
+  const nextStopAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3";
 
-const stops = [
+  const stops = [
   ["1 Sierpnia 01", 52.195985239324, 20.963193738055, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia 02", 52.195241630708, 20.962546974701, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia 03", 52.195250699181, 20.96481064644, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
@@ -6983,142 +6990,139 @@ const stops = [
 ["Żyzna 02", 52.230712405691, 20.779674636358, "https://kmwawa.github.io/zapowiedzi-4/Żyzna.mp3"]
 
 
-];
+  ];
 
-const selectedStops = [];
-const announcedStops = new Set();
-let watchId = null;
-let announcementsEnabled = false;
-let lastAnnouncedStop = null; // Przechowujemy ostatni zapowiedziany przystanek
+  const selectedStops = [];
+  const announcedStops = new Set();
+  let watchId = null;
+  let announcementsEnabled = false;
 
-// Inicjalizacja mapy
-const map = L.map('map').setView([52.2297, 21.0122], 12);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; OpenStreetMap'
-}).addTo(map);
+  const map = L.map('map').setView([52.2297, 21.0122], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
 
-// Dodawanie markerów na mapę
-stops.forEach(([name, lat, lon, url]) => {
-  const marker = L.marker([lat, lon]).addTo(map);
-  marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
-  marker.on('click', () => addStopToList(name));
-});
-
-// Funkcja dodająca przystanek do listy
-function addStopToList(name) {
-  if (selectedStops.find(s => s[0] === name)) return;
-  const stop = stops.find(s => s[0] === name);
-  if (!stop) return;
-
-  selectedStops.push(stop);
-  const item = document.createElement('li');
-  item.textContent = name;
-  document.getElementById('stop-list').appendChild(item);
-}
-
-// Funkcja czyszcząca listę przystanków
-function clearStopList() {
-  selectedStops.length = 0;
-  document.getElementById('stop-list').innerHTML = '';
-  announcedStops.clear();
-}
-
-// Funkcja do obliczania odległości
-function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371000; // promień Ziemi w metrach
-  const toRad = deg => deg * Math.PI / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a = Math.sin(dLat / 2) ** 2 +
-            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-            Math.sin(dLon / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // odległość w metrach
-}
-
-// Funkcja odtwarzająca zapowiedź
-function playSequence(introUrl, stopUrl) {
-  const intro = new Audio(introUrl);
-  const stop = new Audio(stopUrl);
-  intro.play().then(() => {
-    intro.onended = () => stop.play();
-  }).catch(console.error);
-}
-
-// Funkcja sprawdzająca lokalizację
-function checkLocation(position) {
-  const { latitude: lat, longitude: lon } = position.coords;
-  let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
-
-  if (!announcementsEnabled) {
-    status += "🔇 Zapowiedzi nieaktywne.";
-    document.getElementById('status').textContent = status;
-    return;
-  }
-
-  let announcementMade = false; // Flaga, która zapobiega wielokrotnemu odtwarzaniu zapowiedzi
-
-  for (const [name, stopLat, stopLon, stopUrl] of selectedStops) {
-    const dist = getDistance(lat, lon, stopLat, stopLon);
-    status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
-
-    // Jeśli znajdujemy się w pobliżu przystanku (do 60 metrów)
-    if (dist <= 60 && !announcedStops.has(name)) {
-      announcedStops.add(name); // Oznaczamy przystanek jako ogłoszony
-      playSequence(introAudioUrl, stopUrl); // Odtwarzamy zapowiedź przystanku
-      lastAnnouncedStop = [name, stopLat, stopLon]; // Przechowujemy przystanek jako ostatni zapowiedziany
-      announcementMade = true; // Oznaczamy, że zapowiedź przystanku została odtworzona
-    }
-
-    // Sprawdzamy, czy jesteśmy dalej niż 60 metrów od ostatniego zapowiedzianego przystanku
-   if (!announcementMade && lastAnnouncedStop) {
-  const [lastName, lastLat, lastLon] = lastAnnouncedStop;
-  const distanceToLastStop = getDistance(lat, lon, lastLat, lastLon);
-
-  if (distanceToLastStop > 60 && !announcedStops.has(`${lastName}-next`)) {
-    // Znajdź indeks ostatniego przystanku
-    const currentIndex = selectedStops.findIndex(s => s[0] === lastName);
-    const nextStop = selectedStops[currentIndex + 1];
-
-    if (nextStop) {
-      const [, , , nextStopUrl] = nextStop;
-      playSequence(nextStopAudioUrl, nextStopUrl); // Zagraj: "następny przystanek" + nazwa
-    } else {
-      // Nie ma kolejnego przystanku — zagraj tylko "następny przystanek"
-      const audio = new Audio(nextStopAudioUrl);
-      audio.play().catch(console.error);
-    }
-
-    announcedStops.add(`${lastName}-next`); // Unikalny znacznik
-  }
-}
-
-  }
-
-  document.getElementById('status').textContent = status;
-}
-
-// Funkcja obsługująca błędy GPS
-function handleError(err) {
-  document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
-}
-
-// Funkcja uruchamiająca zapowiedzi
-function startAnnouncements() {
-  if (watchId !== null) return; // już działa
-
-  announcementsEnabled = true;
-  watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
-    enableHighAccuracy: true,
-    maximumAge: 0,
-    timeout: 10000
+  stops.forEach(([name, lat, lon, url]) => {
+    const marker = L.marker([lat, lon]).addTo(map);
+    marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
+    marker.on('click', () => addStopToList(name));
   });
-  document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte. Oczekuję w pobliżu przystanków...";
-}
 
+  function addStopToList(name) {
+    if (selectedStops.find(s => s[0] === name)) return;
+    const stop = stops.find(s => s[0] === name);
+    if (!stop) return;
+    selectedStops.push(stop);
+    const item = document.createElement('li');
+    item.textContent = name;
+    document.getElementById('stop-list').appendChild(item);
+  }
+
+  function clearStopList() {
+    selectedStops.length = 0;
+    document.getElementById('stop-list').innerHTML = '';
+    announcedStops.clear();
+  }
+
+  function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000;
+    const toRad = deg => deg * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  function playSequence(url1, url2) {
+    const a1 = new Audio(url1);
+    const a2 = new Audio(url2);
+    a1.play().then(() => {
+      a1.onended = () => a2.play();
+    }).catch(console.error);
+  }
+
+  function checkLocation(position) {
+    const { latitude: lat, longitude: lon } = position.coords;
+    let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+
+    if (!announcementsEnabled) {
+      status += "🔇 Zapowiedzi nieaktywne.";
+      document.getElementById('status').textContent = status;
+      return;
+    }
+
+    let closest = null;
+    let closestDist = Infinity;
+
+    for (const [name, stopLat, stopLon, stopUrl] of selectedStops) {
+      const dist = getDistance(lat, lon, stopLat, stopLon);
+      status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
+
+      if (dist < closestDist) {
+        closestDist = dist;
+        closest = [name, stopUrl];
+      }
+
+      if (dist <= 60 && !announcedStops.has(name)) {
+        announcedStops.add(name);
+        playSequence(introAudioUrl, stopUrl);
+        break;
+      }
+    }
+
+    if (closest && closestDist > 60 && !announcedStops.has(closest[0])) {
+      announcedStops.add(closest[0]);
+      playSequence(nextStopAudioUrl, closest[1]);
+    }
+
+    document.getElementById('status').textContent = status;
+  }
+
+  function handleError(err) {
+    document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
+  }
+
+  function startAnnouncements() {
+    if (watchId !== null) return;
+    announcementsEnabled = true;
+    watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000
+    });
+    document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte. Oczekuję w pobliżu przystanków...";
+  }
+
+  function addManualStop() {
+    const name = document.getElementById('stop-name').value.trim();
+    if (!name) {
+      alert("Wpisz nazwę przystanku.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      const url = "https://kmwawa.github.io/zapowiedzi/DOMYŚLNA.mp3";
+
+      const newStop = [name, lat, lon, url];
+      stops.push(newStop);
+
+      const marker = L.marker([lat, lon]).addTo(map);
+      marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
+      marker.on('click', () => addStopToList(name));
+
+      document.getElementById('stop-name').value = '';
+
+    }, err => {
+      alert("Nie udało się pobrać lokalizacji: " + err.message);
+    });
+  }
 </script>
-
 
 </body>
 </html>
