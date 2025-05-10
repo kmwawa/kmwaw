@@ -6982,8 +6982,8 @@
     ];
 
   
-  const announcedStops = new Set();
-    let watchId = null;
+ const announcedStops = new Set();
+  let watchId = null;
   let wakeLock = null;
 
   function getDistance(lat1, lon1, lat2, lon2) {
@@ -7025,7 +7025,7 @@
     for (const stop of sortedStops) {
       statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
 
-      if (stop.distance <= 50 && !announcedStops.has(stop.name)) {
+      if (stop.distance <= 60 && !announcedStops.has(stop.name)) {
         playSequence(introAudioUrl, stop.stopAudioUrl);
         announcedStops.add(stop.name);
       }
@@ -7038,6 +7038,27 @@
     document.getElementById('status').textContent = "❌ Błąd geolokalizacji: " + error.message;
   }
 
+  async function requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log("🔒 Wake lock aktywowany");
+        wakeLock.addEventListener('release', () => {
+          console.log("🔓 Wake lock zwolniony");
+        });
+      }
+    } catch (err) {
+      console.error("⚠️ Nie udało się aktywować wake lock:", err);
+    }
+  }
+
+  function releaseWakeLock() {
+    if (wakeLock) {
+      wakeLock.release();
+      wakeLock = null;
+    }
+  }
+
   function startTracking() {
     if (!navigator.geolocation) {
       alert("Twoja przeglądarka nie obsługuje geolokalizacji.");
@@ -7045,6 +7066,8 @@
     }
 
     document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
+
+    requestWakeLock(); // 🔒 nie pozwala wygasić ekranu
 
     watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
       enableHighAccuracy: true,
@@ -7058,6 +7081,7 @@
       navigator.geolocation.clearWatch(watchId);
       watchId = null;
     }
+    releaseWakeLock(); // 🔓 zwolnij blokadę ekranu
     document.getElementById('status').textContent = "⏹️ Śledzenie zatrzymane.";
   }
   </script>
