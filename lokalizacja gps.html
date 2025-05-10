@@ -20,12 +20,12 @@
 </head>
 <body>
   <h1>Zapowiedzi przystanków GPS</h1>
-  <button onclick="startTracking()">Start</button>
-  <pre id="status">Czekam na uruchomienie...</pre>
+ <button onclick="startTracking()">▶️ Start</button>
+<button onclick="stopTracking()">⏹️ Stop</button>
+<pre id="status">📍 Czekam na uruchomienie śledzenia...</pre>
 
   <script>
- const announcedStops = new Set();
-  let trackingInterval;
+ const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3"; // Ścieżka do pliku audio intro
     const stops = [
       ["Włochy-Ratusz", 52.28673546225148, 21.025814034098982, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
 ["1 Sierpnia 01", 52.195985239324, 20.963193738055, "https://kmwawa.github.io/zapowiedzi/1 Sierpnia.mp3"],
@@ -6982,8 +6982,9 @@
     ];
 
   
- 
-   const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3"; // Ścieżka do pliku audio intro
+  const announcedStops = new Set();
+    let watchId = null;
+  let wakeLock = null;
 
   function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3;
@@ -7024,7 +7025,7 @@
     for (const stop of sortedStops) {
       statusText += `➡️ ${stop.name}: ${stop.distance.toFixed(1)} m\n`;
 
-      if (stop.distance <= 35 && !announcedStops.has(stop.name)) {
+      if (stop.distance <= 50 && !announcedStops.has(stop.name)) {
         playSequence(introAudioUrl, stop.stopAudioUrl);
         announcedStops.add(stop.name);
       }
@@ -7045,17 +7046,18 @@
 
     document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
 
-    trackingInterval = setInterval(() => {
-      navigator.geolocation.getCurrentPosition(checkLocation, handleError, {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 10000
-      });
-    }, 3000); // Co 3 sekundy
+    watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000
+    });
   }
 
   function stopTracking() {
-    clearInterval(trackingInterval);
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+    }
     document.getElementById('status').textContent = "⏹️ Śledzenie zatrzymane.";
   }
   </script>
