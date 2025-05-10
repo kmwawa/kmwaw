@@ -7072,15 +7072,28 @@ function checkLocation(position) {
     }
 
     // Sprawdzamy, czy jesteśmy dalej niż 60 metrów od ostatniego zapowiedzianego przystanku
-    if (!announcementMade && lastAnnouncedStop) {
-      const [lastName, lastLat, lastLon] = lastAnnouncedStop;
-      const distanceToLastStop = getDistance(lat, lon, lastLat, lastLon);
-      if (distanceToLastStop > 60 && !announcedStops.has(lastName)) {
-        const audio = new Audio(nextStopAudioUrl); // Odtwarzamy zapowiedź "następnego przystanku"
-        audio.play().catch(console.error);
-        announcedStops.add(lastName); // Oznaczamy zapowiedź "następnego przystanku" jako ogłoszoną
-      }
+   if (!announcementMade && lastAnnouncedStop) {
+  const [lastName, lastLat, lastLon] = lastAnnouncedStop;
+  const distanceToLastStop = getDistance(lat, lon, lastLat, lastLon);
+
+  if (distanceToLastStop > 60 && !announcedStops.has(`${lastName}-next`)) {
+    // Znajdź indeks ostatniego przystanku
+    const currentIndex = selectedStops.findIndex(s => s[0] === lastName);
+    const nextStop = selectedStops[currentIndex + 1];
+
+    if (nextStop) {
+      const [, , , nextStopUrl] = nextStop;
+      playSequence(nextStopAudioUrl, nextStopUrl); // Zagraj: "następny przystanek" + nazwa
+    } else {
+      // Nie ma kolejnego przystanku — zagraj tylko "następny przystanek"
+      const audio = new Audio(nextStopAudioUrl);
+      audio.play().catch(console.error);
     }
+
+    announcedStops.add(`${lastName}-next`); // Unikalny znacznik
+  }
+}
+
   }
 
   document.getElementById('status').textContent = status;
