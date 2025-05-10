@@ -669,13 +669,13 @@
 { number: "755", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_755_SB-ND_22-04-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-10", "2025-05-11", "2025-05-17", "2025-05-18"] },
 
 { number: "800", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_800_SB-ND_22-04-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-10", "2025-05-11", "2025-05-17", "2025-05-18"] },
-{ number: "900", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_900_SB-ND_05-05-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-10", "2025-05-11", "2025-05-17", "2025-05-18"] },
+{ number: "900", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_900_SB-ND_05-05-2025.pdf", type: "autobus", dates: ["2025-05-10", "2025-05-11", "2025-05-17", "2025-05-18"] },
 
-{ number: "B", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_B_SB_17-05-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-17"] },
-{ number: "C", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_C_SB_17-05-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-17"] },
-{ number: "D", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_D_SB_17-05-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-17"] },
-{ number: "E", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_E_SB_17-05-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-17"] },
-{ number: "F", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_F_SB_17-05-2025.pdf", type: "autobus-strefowy", dates: ["2025-05-17"] },
+{ number: "B", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_B_SB_17-05-2025.pdf", type: "autobus", dates: ["2025-05-17"] },
+{ number: "C", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_C_SB_17-05-2025.pdf", type: "autobus", dates: ["2025-05-17"] },
+{ number: "D", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_D_SB_17-05-2025.pdf", type: "autobus", dates: ["2025-05-17"] },
+{ number: "E", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_E_SB_17-05-2025.pdf", type: "autobus", dates: ["2025-05-17"] },
+{ number: "F", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_F_SB_17-05-2025.pdf", type: "autobus", dates: ["2025-05-17"] },
 					
 { number: "Z-1", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_Z-1_SB-ND_05-05-2025.pdf", type: "autobus", dates: ["2025-05-10", "2025-05-11", "2025-05-17", "2025-05-18"] },
 { number: "Z-8", file: "https://kmwawa.github.io/kmwaw-rozklad-brygad/rozkład_Z-8_SB-ND_05-05-2025.pdf", type: "autobus", dates: ["2025-05-10", "2025-05-11", "2025-05-17", "2025-05-18"] },
@@ -1890,11 +1890,12 @@ function updateLinesAndContent() {
         else if (num >= 800 && num <= 899) range = "800-899";
         else if (num >= 900 && num <= 999) range = "900-999";
       }
-
-      if (typeof number === "string" && /^[wZnlse]/i.test(number)) {
-        range = number[0].toLowerCase();
-      }
-
+if (typeof number === "string" && /^[wZnlse]/i.test(number)) {
+  const firstChar = number[0].toLowerCase();
+  if (firstChar !== "e" || number.length >= 2) {
+    range = firstChar;
+  }
+}
       if (range && !addedLineBreak[range]) {
         const spacer = document.createElement("div");
         spacer.style.marginTop = "40px";
