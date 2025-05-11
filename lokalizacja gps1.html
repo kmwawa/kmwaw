@@ -6995,140 +6995,156 @@
 
     ];
 
-    const selectedStops = [];
-    const announcedStops = new Set();
-    let watchId = null;
-    let announcementsEnabled = false;
+  const selectedStops = [];
+  const announcedStops = new Set();
+  const stopMarkers = new Map();
+  let watchId = null;
+  let announcementsEnabled = false;
 
-    const map = L.map('map').setView([52.2297, 21.0122], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
+  const map = L.map('map').setView([52.2297, 21.0122], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // Zlokalizuj użytkownika i ustaw widok mapy
+  map.locate({ setView: true, maxZoom: 16, watch: true });
+
+  map.on('locationfound', function(e) {
+    map.setView(e.latlng, 16);
+    updateVisibleMarkers();
+  });
+
+  map.on('moveend', updateVisibleMarkers);
+
+  function updateVisibleMarkers() {
+    const bounds = map.getBounds();
 
     stops.forEach(([name, lat, lon, url]) => {
-      const marker = L.marker([lat, lon]).addTo(map);
-      marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
-      marker.on('click', () => addStopToList(name));
+      const position = [lat, lon];
+      const isVisible = bounds.contains(position);
+
+      if (isVisible && !stopMarkers.has(name)) {
+        const marker = L.marker(position).addTo(map);
+        marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
+        marker.on('click', () => addStopToList(name));
+        stopMarkers.set(name, marker);
+      } else if (!isVisible && stopMarkers.has(name)) {
+        map.removeLayer(stopMarkers.get(name));
+        stopMarkers.delete(name);
+      }
     });
+  }
 
-    function addStopToList(name) {
-      if (selectedStops.find(s => s[0] === name)) return;
-      const stop = stops.find(s => s[0] === name);
-      if (!stop) return;
-      selectedStops.push(stop);
-      const item = document.createElement('li');
-      item.textContent = name;
-      document.getElementById('stop-list').appendChild(item);
-    }
+  function addStopToList(name) {
+    if (selectedStops.find(s => s[0] === name)) return;
+    const stop = stops.find(s => s[0] === name);
+    if (!stop) return;
+    selectedStops.push(stop);
+    const item = document.createElement('li');
+    item.textContent = name;
+    document.getElementById('stop-list').appendChild(item);
+  }
 
-    function clearStopList() {
-      selectedStops.length = 0;
-      document.getElementById('stop-list').innerHTML = '';
-      announcedStops.clear();
-    }
+  function clearStopList() {
+    selectedStops.length = 0;
+    document.getElementById('stop-list').innerHTML = '';
+    announcedStops.clear();
+  }
 
-    function getDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371000;
-      const toRad = deg => deg * Math.PI / 180;
-      const dLat = toRad(lat2 - lat1);
-      const dLon = toRad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) ** 2 +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-                Math.sin(dLon / 2) ** 2;
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return R * c;
-    }
+  function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000;
+    const toRad = deg => deg * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
 
-    function playSequence(url1, url2) {
-      const a1 = new Audio(url1);
-      const a2 = new Audio(url2);
-      a1.play().then(() => {
-        a1.onended = () => a2.play();
-      }).catch(console.error);
-    }
+  function playSequence(url1, url2) {
+    const a1 = new Audio(url1);
+    const a2 = new Audio(url2);
+    a1.play().then(() => {
+      a1.onended = () => a2.play();
+    }).catch(console.error);
+  }
 
-    function checkLocation(position) {
-      const { latitude: lat, longitude: lon } = position.coords;
-      let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+ function checkLocation(position) {
+  const { latitude: lat, longitude: lon } = position.coords;
+  let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
 
-      if (!announcementsEnabled) {
-        status += "🔇 Zapowiedzi nieaktywne.";
-        document.getElementById('status').textContent = status;
-        return;
-      }
+  if (!announcementsEnabled) {
+    status += "🔇 Zapowiedzi nieaktywne.";
+    document.getElementById('status').textContent = status;
+    return;
+  }
 
-      let closest = null;
-      let closestDist = Infinity;
+  for (let i = 0; i < selectedStops.length; i++) {
+    const [name, stopLat, stopLon, stopUrl] = selectedStops[i];
+    const dist = getDistance(lat, lon, stopLat, stopLon);
+    status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
 
-      for (const [name, stopLat, stopLon, stopUrl] of selectedStops) {
-        const dist = getDistance(lat, lon, stopLat, stopLon);
-        status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
-
-        if (dist < closestDist) {
-          closestDist = dist;
-          closest = [name, stopUrl];
-        }
-
-        if (dist <= 60 && !announcedStops.has(name)) {
+    if (!announcedStops.has(name)) {
+      if (dist <= 60) {
+        announcedStops.add(name);
+        playSequence(introAudioUrl, stopUrl);
+      } else {
+        // Ogłaszaj "następny przystanek", tylko jeśli nie był jeszcze ogłoszony
+        if (i === 0 || selectedStops.slice(0, i).every(s => announcedStops.has(s[0]))) {
           announcedStops.add(name);
-          playSequence(introAudioUrl, stopUrl);
-          document.getElementById('status').textContent = status;
-          return;
+          playSequence(nextStopAudioUrl, stopUrl);
         }
       }
-
-      // jeśli dalej niż 60 m
-      if (closest && closestDist > 60 && !announcedStops.has(closest[0])) {
-        announcedStops.add(closest[0]);
-        playSequence(nextStopAudioUrl, closest[1]);
-      }
-
-      document.getElementById('status').textContent = status;
+      break; // Zatrzymaj po pierwszym nieogłoszonym przystanku
     }
+  }
 
-    function handleError(err) {
-      document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
+  document.getElementById('status').textContent = status;
+}
+
+  function handleError(err) {
+    document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
+  }
+
+  function startAnnouncements() {
+    if (watchId !== null) return;
+    announcementsEnabled = true;
+    watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000
+    });
+    document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
+  }
+
+  function addManualStop() {
+    const name = document.getElementById('stop-name').value.trim();
+    if (!name) {
+      alert("Wpisz nazwę przystanku.");
+      return;
     }
-
-    function startAnnouncements() {
-      if (watchId !== null) return;
-      announcementsEnabled = true;
-      watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 10000
-      });
-      document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte. Oczekuję w pobliżu przystanków...";
+    const stop = stops.find(s => s[0] === name);
+    if (!stop) {
+      alert("Nie znaleziono przystanku.");
+      return;
     }
+    addStopToList(name);
+    document.getElementById('stop-name').value = '';
+  }
 
-    function addManualStop() {
-      const name = document.getElementById('stop-name').value.trim();
-      if (!name) {
-        alert("Wpisz nazwę przystanku.");
-        return;
-      }
+  function populateStopOptions() {
+    const datalist = document.getElementById('stop-options');
+    stops.forEach(([name]) => {
+      const option = document.createElement('option');
+      option.value = name;
+      datalist.appendChild(option);
+    });
+  }
 
-      const existing = stops.find(s => s[0] === name);
-      if (!existing) {
-        alert("Nie znaleziono takiego przystanku na liście.");
-        return;
-      }
-
-      addStopToList(name);
-      document.getElementById('stop-name').value = '';
-    }
-
-    function populateStopOptions() {
-      const datalist = document.getElementById('stop-options');
-      stops.forEach(([name]) => {
-        const option = document.createElement('option');
-        option.value = name;
-        datalist.appendChild(option);
-      });
-    }
-
-    populateStopOptions();
+  populateStopOptions();
   </script>
 </body>
 </html>
