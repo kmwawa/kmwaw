@@ -6994,184 +6994,154 @@
 
     ];
 
- const selectedStops = [];
+const selectedStops = [];
 const announcedStops = new Set();
-let watchId = null;
-let announcementsEnabled = false;
+let currentIndex = 0;
 let mapCentered = false;
-let currentIndex = 0; // Indeks bieżącego przystanku
+let watchId = null;
 
 const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK.mp3";
-const nextStopAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3";
+const nextStopAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY%20PRZYSTANEK.mp3";
 
-// Utwórz mapę
-const map = L.map('map').setView([52.2297, 21.0122], 12);  // Ustawienia mapy, domyślnie w Warszawie
+const map = L.map('map').setView([52.2297, 21.0122], 12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap'
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap'
 }).addTo(map);
 
-const markers = []; // Tablica do przechowywania markerów
+const markers = [];
 
-// Funkcja do dodawania markerów dla przystanków
-function addStopToList(name) {
-    if (selectedStops.find(s => s[0] === name)) return;
-    const stop = stops.find(s => s[0] === name);
-    if (!stop) return;
-    selectedStops.push(stop);
-    const item = document.createElement('li');
-    item.textContent = name;
-    document.getElementById('stop-list').appendChild(item);
-}
-
-// Funkcja do czyszczenia listy przystanków
-function clearStopList() {
-    selectedStops.length = 0;
-    currentIndex = 0;
-    document.getElementById('stop-list').innerHTML = '';
-    announcedStops.clear();
-}
-
-// Funkcja do obliczania odległości między dwoma punktami
 function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371000;
-    const toRad = deg => deg * Math.PI / 180;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 +
-              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-              Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+  const R = 6371000;
+  const toRad = deg => deg * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
 }
 
-// Funkcja do odtwarzania zapowiedzi
 function playSequence(url1, url2) {
-    const a1 = new Audio(url1);
-    const a2 = new Audio(url2);
-    a1.play().then(() => {
-        a1.onended = () => a2.play();
-    }).catch(console.error);
+  const a1 = new Audio(url1);
+  const a2 = new Audio(url2);
+  a1.play().then(() => {
+    a1.onended = () => a2.play();
+  }).catch(console.error);
 }
 
-// Funkcja do sprawdzania lokalizacji użytkownika
-function checkLocation(position) {
-    const { latitude: lat, longitude: lon } = position.coords;
-    let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
-
-    if (!announcementsEnabled || currentIndex >= selectedStops.length) {
-        document.getElementById('status').textContent = status;
-        return;
-    }
-
-    // Jeśli mapa nie została jeszcze ustawiona na lokalizację, centrowanie
-    if (!mapCentered) {
-        map.setView([lat, lon], 16);
-        mapCentered = true;
-    }
-
-    // Renderuj markery w obrębie widocznej części mapy
-    renderMarkersInView();
-
-    const [name, stopLat, stopLon, stopUrl] = selectedStops[currentIndex];
-    const dist = getDistance(lat, lon, stopLat, stopLon);
-    status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
-
-    // Jeśli odległość do bieżącego przystanku jest mniejsza niż 60m, odtwarzamy zapowiedź
-    if (dist <= 60 && !announcedStops.has(name)) {
-        announcedStops.add(name);
-        playSequence(introAudioUrl, stopUrl);
-        currentIndex++; // Przechodzimy do kolejnego przystanku
-
-        // Zapowiedź "następnego przystanku", jeśli odległość jest większa niż 60m
-        if (currentIndex < selectedStops.length) {
-            const nextStop = selectedStops[currentIndex];
-            const nextStopName = nextStop[0];
-            if (dist > 60 && !announcedStops.has(nextStopName)) {
-                playSequence(nextStopAudioUrl, nextStop[3]);
-            }
-        }
-    }
-
-    document.getElementById('status').textContent = status;
+function addStopToList(name) {
+  if (selectedStops.find(s => s[0] === name)) return;
+  const stop = stops.find(s => s[0] === name);
+  if (!stop) return;
+  selectedStops.push(stop);
+  const li = document.createElement('li');
+  li.textContent = name;
+  document.getElementById('stop-list').appendChild(li);
 }
 
-// Obsługuje błąd pobierania lokalizacji
-function handleError(err) {
-    document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
+function clearStopList() {
+  selectedStops.length = 0;
+  announcedStops.clear();
+  currentIndex = 0;
+  document.getElementById('stop-list').innerHTML = '';
 }
 
-// Funkcja do rozpoczęcia śledzenia lokalizacji
-function startAnnouncements() {
-    if (watchId !== null) return;
-    announcementsEnabled = true;
-    watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 10000
-    });
-}
-
-// Funkcja do dodawania przystanku ręcznie
-function addManualStop() {
-    const name = document.getElementById('stop-name').value.trim();
-    if (!name) {
-        alert("Wpisz nazwę przystanku.");
-        return;
-    }
-
-    const stop = stops.find(s => s[0] === name);
-    if (!stop) {
-        alert("Nie znaleziono przystanku w bazie.");
-        return;
-    }
-
-    addStopToList(name);
-    document.getElementById('stop-name').value = '';
-}
-
-// Funkcja do renderowania markerów, które mieszczą się w obrębie widocznej części mapy
 function renderMarkersInView() {
-    const bounds = map.getBounds();
-    markers.forEach(m => map.removeLayer(m)); // Usuń stare markery
-    markers.length = 0;
+  const bounds = map.getBounds();
+  markers.forEach(m => map.removeLayer(m));
+  markers.length = 0;
 
-    stops.forEach(([name, lat, lon, url]) => {
-        if (bounds.contains([lat, lon])) {
-            const marker = L.marker([lat, lon]).addTo(map);
-            marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
-            marker.on('click', () => addStopToList(name));
-            markers.push(marker);
-        }
-    });
+  stops.forEach(([name, lat, lon]) => {
+    if (bounds.contains([lat, lon])) {
+      const marker = L.marker([lat, lon]).addTo(map);
+      marker.bindTooltip(name);
+      marker.on('click', () => addStopToList(name));
+      markers.push(marker);
+    }
+  });
 }
+
+function checkLocation(position) {
+  const { latitude: lat, longitude: lon } = position.coords;
+  document.getElementById('status').textContent =
+    `📍 Twoja pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+  if (!mapCentered) {
+    map.setView([lat, lon], 16);
+    mapCentered = true;
+  }
+
+  renderMarkersInView();
+
+  if (currentIndex >= selectedStops.length) return;
+
+  const [name, stopLat, stopLon, stopUrl] = selectedStops[currentIndex];
+  const dist = getDistance(lat, lon, stopLat, stopLon);
+
+  if (dist <= 60 && !announcedStops.has(name)) {
+    playSequence(introAudioUrl, stopUrl);
+    announcedStops.add(name);
+    currentIndex++;
+  } else if (dist > 60 && !announcedStops.has(name) && currentIndex > 0) {
+    const [prevName, prevLat, prevLon] = selectedStops[currentIndex - 1];
+    const distPrev = getDistance(lat, lon, prevLat, prevLon);
+    if (distPrev > 60) {
+      playSequence(nextStopAudioUrl, stopUrl);
+      announcedStops.add(name);
+    }
+  }
+}
+
+function handleError(err) {
+  document.getElementById('status').textContent =
+    "❌ Błąd lokalizacji: " + err.message;
+}
+
+function startAnnouncements() {
+  if (watchId !== null) return;
+  watchId = navigator.geolocation.watchPosition(
+    checkLocation, handleError, { enableHighAccuracy: true }
+  );
+
+  // Nie wygaszaj ekranu (jeśli obsługiwane)
+  if ('wakeLock' in navigator) {
+    navigator.wakeLock.request('screen').catch(console.warn);
+  }
+}
+
+function addManualStop() {
+  const name = document.getElementById('stop-name').value.trim();
+  if (!name) return;
+  addStopToList(name);
+  document.getElementById('stop-name').value = '';
+}
+
+function populateStopOptions() {
+  const datalist = document.getElementById('stop-options');
+  stops.forEach(([name]) => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    datalist.appendChild(opt);
+  });
+}
+
+populateStopOptions();
 
 map.on('moveend', renderMarkersInView);
 
-// ⬇️ Zapyta o lokalizację od razu
+// Od razu zapytaj o lokalizację i ustaw mapę
 navigator.geolocation.getCurrentPosition(
-    pos => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-        map.setView([lat, lon], 16);
-        mapCentered = true;
-        renderMarkersInView();
-    },
-    handleError,
-    { enableHighAccuracy: true }
+  pos => {
+    mapCentered = true;
+    const { latitude, longitude } = pos.coords;
+    map.setView([latitude, longitude], 16);
+    renderMarkersInView();
+  },
+  handleError,
+  { enableHighAccuracy: true }
 );
-
-// Funkcja uruchamiająca dodawanie markerów i monitorowanie lokalizacji
-function init() {
-    document.getElementById('start-btn').addEventListener('click', () => {
-        startAnnouncements();
-    });
-
-    document.getElementById('clear-btn').addEventListener('click', clearStopList);
-    document.getElementById('add-stop-btn').addEventListener('click', addManualStop);
-}
-
-init();
   </script>
 </body>
 </html>
