@@ -6995,156 +6995,161 @@
 
     ];
 
-  const selectedStops = [];
-  const announcedStops = new Set();
-  const stopMarkers = new Map();
-  let watchId = null;
-  let announcementsEnabled = false;
+const selectedStops = [];
+    const announcedStops = new Set();
+    let watchId = null;
+    let announcementsEnabled = false;
+    let mapCentered = false;
+    let currentIndex = 0;
 
-  const map = L.map('map').setView([52.2297, 21.0122], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap'
-  }).addTo(map);
+    const map = L.map('map').setView([52.2297, 21.0122], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
 
-  // Zlokalizuj użytkownika i ustaw widok mapy
-  map.locate({ setView: true, maxZoom: 16, watch: true });
+    const markers = [];
 
-  map.on('locationfound', function(e) {
-    map.setView(e.latlng, 16);
-    updateVisibleMarkers();
-  });
+    function addStopToList(name) {
+      if (selectedStops.find(s => s[0] === name)) return;
+      const stop = stops.find(s => s[0] === name);
+      if (!stop) return;
+      selectedStops.push(stop);
+      const item = document.createElement('li');
+      item.textContent = name;
+      document.getElementById('stop-list').appendChild(item);
+    }
 
-  map.on('moveend', updateVisibleMarkers);
+    function clearStopList() {
+      selectedStops.length = 0;
+      currentIndex = 0;
+      document.getElementById('stop-list').innerHTML = '';
+      announcedStops.clear();
+    }
 
-  function updateVisibleMarkers() {
-    const bounds = map.getBounds();
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const toRad = deg => deg * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
 
-    stops.forEach(([name, lat, lon, url]) => {
-      const position = [lat, lon];
-      const isVisible = bounds.contains(position);
+    function playSequence(url1, url2) {
+      const a1 = new Audio(url1);
+      const a2 = new Audio(url2);
+      a1.play().then(() => {
+        a1.onended = () => a2.play();
+      }).catch(console.error);
+    }
 
-      if (isVisible && !stopMarkers.has(name)) {
-        const marker = L.marker(position).addTo(map);
-        marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
-        marker.on('click', () => addStopToList(name));
-        stopMarkers.set(name, marker);
-      } else if (!isVisible && stopMarkers.has(name)) {
-        map.removeLayer(stopMarkers.get(name));
-        stopMarkers.delete(name);
+    function checkLocation(position) {
+      const { latitude: lat, longitude: lon } = position.coords;
+      let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+
+      if (!announcementsEnabled || currentIndex >= selectedStops.length) {
+        document.getElementById('status').textContent = status;
+        return;
       }
-    });
-  }
 
-  function addStopToList(name) {
-    if (selectedStops.find(s => s[0] === name)) return;
-    const stop = stops.find(s => s[0] === name);
-    if (!stop) return;
-    selectedStops.push(stop);
-    const item = document.createElement('li');
-    item.textContent = name;
-    document.getElementById('stop-list').appendChild(item);
-  }
+      if (!mapCentered) {
+        map.setView([lat, lon], 16);
+        mapCentered = true;
+      }
 
-  function clearStopList() {
-    selectedStops.length = 0;
-    document.getElementById('stop-list').innerHTML = '';
-    announcedStops.clear();
-  }
+      renderMarkersInView();
 
-  function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371000;
-    const toRad = deg => deg * Math.PI / 180;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 +
-              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-              Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
+      const [name, stopLat, stopLon, stopUrl] = selectedStops[currentIndex];
+      const dist = getDistance(lat, lon, stopLat, stopLon);
+      status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
 
-  function playSequence(url1, url2) {
-    const a1 = new Audio(url1);
-    const a2 = new Audio(url2);
-    a1.play().then(() => {
-      a1.onended = () => a2.play();
-    }).catch(console.error);
-  }
-
- function checkLocation(position) {
-  const { latitude: lat, longitude: lon } = position.coords;
-  let status = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
-
-  if (!announcementsEnabled) {
-    status += "🔇 Zapowiedzi nieaktywne.";
-    document.getElementById('status').textContent = status;
-    return;
-  }
-
-  for (let i = 0; i < selectedStops.length; i++) {
-    const [name, stopLat, stopLon, stopUrl] = selectedStops[i];
-    const dist = getDistance(lat, lon, stopLat, stopLon);
-    status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
-
-    if (!announcedStops.has(name)) {
-      if (dist <= 60) {
-        announcedStops.add(name);
+      if (dist <= 60 && !announcedStops.has(name)) {
         playSequence(introAudioUrl, stopUrl);
-      } else {
-        // Ogłaszaj "następny przystanek", tylko jeśli nie był jeszcze ogłoszony
-        if (i === 0 || selectedStops.slice(0, i).every(s => announcedStops.has(s[0]))) {
-          announcedStops.add(name);
-          playSequence(nextStopAudioUrl, stopUrl);
-        }
+        announcedStops.add(name);
+        currentIndex++;
+      } else if (dist > 60 && !announcedStops.has(name)) {
+        playSequence(nextStopAudioUrl, stopUrl);
+        announcedStops.add(name);
       }
-      break; // Zatrzymaj po pierwszym nieogłoszonym przystanku
+
+      document.getElementById('status').textContent = status;
     }
-  }
 
-  document.getElementById('status').textContent = status;
-}
-
-  function handleError(err) {
-    document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
-  }
-
-  function startAnnouncements() {
-    if (watchId !== null) return;
-    announcementsEnabled = true;
-    watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 10000
-    });
-    document.getElementById('status').textContent = "📡 Śledzenie rozpoczęte...";
-  }
-
-  function addManualStop() {
-    const name = document.getElementById('stop-name').value.trim();
-    if (!name) {
-      alert("Wpisz nazwę przystanku.");
-      return;
+    function handleError(err) {
+      document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
     }
-    const stop = stops.find(s => s[0] === name);
-    if (!stop) {
-      alert("Nie znaleziono przystanku.");
-      return;
+
+    function startAnnouncements() {
+      if (watchId !== null) return;
+      announcementsEnabled = true;
+      watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000
+      });
     }
-    addStopToList(name);
-    document.getElementById('stop-name').value = '';
-  }
 
-  function populateStopOptions() {
-    const datalist = document.getElementById('stop-options');
-    stops.forEach(([name]) => {
-      const option = document.createElement('option');
-      option.value = name;
-      datalist.appendChild(option);
-    });
-  }
+    function addManualStop() {
+      const name = document.getElementById('stop-name').value.trim();
+      if (!name) {
+        alert("Wpisz nazwę przystanku.");
+        return;
+      }
 
-  populateStopOptions();
+      const stop = stops.find(s => s[0] === name);
+      if (!stop) {
+        alert("Nie znaleziono przystanku w bazie.");
+        return;
+      }
+
+      addStopToList(name);
+      document.getElementById('stop-name').value = '';
+    }
+
+    function populateStopOptions() {
+      const datalist = document.getElementById('stop-options');
+      stops.forEach(([name]) => {
+        const option = document.createElement('option');
+        option.value = name;
+        datalist.appendChild(option);
+      });
+    }
+
+    function renderMarkersInView() {
+      const bounds = map.getBounds();
+      markers.forEach(m => map.removeLayer(m));
+      markers.length = 0;
+
+      stops.forEach(([name, lat, lon, url]) => {
+        if (bounds.contains([lat, lon])) {
+          const marker = L.marker([lat, lon]).addTo(map);
+          marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
+          marker.on('click', () => addStopToList(name));
+          markers.push(marker);
+        }
+      });
+    }
+
+    map.on('moveend', renderMarkersInView);
+
+    // ⬇️ Zapyta o lokalizację od razu
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        map.setView([lat, lon], 16);
+        mapCentered = true;
+        renderMarkersInView();
+      },
+      handleError,
+      { enableHighAccuracy: true }
+    );
+
+    populateStopOptions();
   </script>
 </body>
 </html>
