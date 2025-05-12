@@ -6995,169 +6995,152 @@
     ];
 
 const selectedStops = [];
-  const announcedStops = new Set();
-  let watchId = null;
-  let announcementsEnabled = false;
-  let mapCentered = false;
-  let currentIndex = 0;
+let currentIndex = 0;
+let watchId = null;
+let mapCentered = false;
+let readyForNext = false;
+const announcedNext = new Set();
+const announcedArrival = new Set();
 
-  const introAudioUrl = "https://kmwawa.github.io/zapowiedzi/Zapowiedz.mp3";
-  const nextStopAudioUrl = "https://kmwawa.github.io/zapowiedzi/Nastepny.mp3";
+const introAudioUrl = "audio/nastepny-przystanek.mp3";
 
-  const map = L.map('map').setView([52.2297, 21.0122], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap'
-  }).addTo(map);
+const map = L.map('map').setView([52.2297, 21.0122], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; OpenStreetMap'
+}).addTo(map);
 
-  const markers = [];
+const markers = [];
 
-  function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371000;
-    const toRad = deg => deg * Math.PI / 180;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 +
-              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-              Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const toRad = x => x * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function playSequence(url1, url2) {
+  const a1 = new Audio(url1);
+  const a2 = new Audio(url2);
+  a1.play().then(() => {
+    a1.onended = () => a2.play();
+  }).catch(console.error);
+}
+
+function checkLocation(pos) {
+  const { latitude: lat, longitude: lon } = pos.coords;
+  document.getElementById('status').textContent = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+  if (!mapCentered) {
+    map.setView([lat, lon], 16);
+    mapCentered = true;
   }
 
-  function playSequence(url1, url2) {
-    const a1 = new Audio(url1);
-    const a2 = new Audio(url2);
-    a1.play().then(() => {
-      a1.onended = () => a2.play();
-    }).catch(console.error);
+  renderMarkersInView();
+
+  if (currentIndex >= selectedStops.length) return;
+
+  const [name, stopLat, stopLon, stopAudio] = selectedStops[currentIndex];
+  const dist = getDistance(lat, lon, stopLat, stopLon);
+
+  if (dist > 60 && !announcedNext.has(name)) {
+    playSequence(introAudioUrl, stopAudio);
+    announcedNext.add(name);
+    readyForNext = true;
   }
 
-  function checkLocation(position) {
-    const { latitude: lat, longitude: lon } = position.coords;
-    let status = `📍 Twoja pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}\n`;
+  if (dist <= 60 && readyForNext && !announcedArrival.has(name)) {
+    const audio = new Audio(stopAudio);
+    audio.play();
+    announcedArrival.add(name);
+    currentIndex++;
+    readyForNext = false;
+  }
+}
 
-    if (!announcementsEnabled || currentIndex >= selectedStops.length) {
-      document.getElementById('status').textContent = status;
-      return;
+function handleError(err) {
+  document.getElementById('status').textContent = "❌ Błąd lokalizacji: " + err.message;
+}
+
+function addManualStop() {
+  const name = document.getElementById('stop-name').value.trim();
+  const stop = stops.find(s => s[0] === name);
+  if (!stop) {
+    alert("Nie znaleziono przystanku.");
+    return;
+  }
+  if (!selectedStops.find(s => s[0] === name)) {
+    selectedStops.push(stop);
+    const li = document.createElement("li");
+    li.textContent = name;
+    document.getElementById('stop-list').appendChild(li);
+  }
+  document.getElementById('stop-name').value = "";
+}
+
+function startAnnouncements() {
+  if (watchId !== null) return;
+  watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 10000
+  });
+}
+
+function clearStopList() {
+  selectedStops.length = 0;
+  currentIndex = 0;
+  readyForNext = false;
+  announcedNext.clear();
+  announcedArrival.clear();
+  document.getElementById('stop-list').innerHTML = '';
+}
+
+function populateStopOptions() {
+  const list = document.getElementById('stop-options');
+  stops.forEach(([name]) => {
+    const option = document.createElement("option");
+    option.value = name;
+    list.appendChild(option);
+  });
+}
+
+function renderMarkersInView() {
+  const bounds = map.getBounds();
+  markers.forEach(m => map.removeLayer(m));
+  markers.length = 0;
+
+  stops.forEach(([name, lat, lon, audio]) => {
+    if (bounds.contains([lat, lon])) {
+      const marker = L.marker([lat, lon]).addTo(map);
+      marker.bindTooltip(name);
+      marker.on("click", () => {
+        document.getElementById('stop-name').value = name;
+      });
+      markers.push(marker);
     }
+  });
+}
 
-    if (!mapCentered) {
-      map.setView([lat, lon], 16);
-      mapCentered = true;
-    }
+map.on("moveend", renderMarkersInView);
 
+navigator.geolocation.getCurrentPosition(
+  pos => {
+    map.setView([pos.coords.latitude, pos.coords.longitude], 16);
+    mapCentered = true;
     renderMarkersInView();
+  },
+  handleError,
+  { enableHighAccuracy: true }
+);
 
-    const [name, stopLat, stopLon, stopUrl] = selectedStops[currentIndex];
-    const dist = getDistance(lat, lon, stopLat, stopLon);
-    status += `➡️ ${name}: ${dist.toFixed(1)} m\n`;
+populateStopOptions();
 
-    const prevStop = currentIndex > 0 ? selectedStops[currentIndex - 1] : null;
-    const distFromPrev = prevStop ? getDistance(lat, lon, prevStop[1], prevStop[2]) : Infinity;
-
-    if (dist <= 60 && !announcedStops.has(name)) {
-      playSequence(introAudioUrl, stopUrl);
-      announcedStops.add(name);
-      currentIndex++;
-    } else if (dist > 60 && distFromPrev > 60 && !announcedStops.has(name)) {
-      playSequence(nextStopAudioUrl, stopUrl);
-    }
-
-    document.getElementById('status').textContent = status;
-  }
-
-  function handleError(err) {
-    document.getElementById('status').textContent = "❌ Błąd GPS: " + err.message;
-  }
-
-  function startAnnouncements() {
-    if (watchId !== null) return;
-    announcementsEnabled = true;
-    watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 10000
-    });
-  }
-
-  function addManualStop() {
-    const name = document.getElementById('stop-name').value.trim();
-    if (!name) {
-      alert("Wpisz nazwę przystanku.");
-      return;
-    }
-
-    const stop = stops.find(s => s[0] === name);
-    if (!stop) {
-      alert("Nie znaleziono przystanku.");
-      return;
-    }
-
-    if (selectedStops.find(s => s[0] === name)) return;
-
-    selectedStops.push(stop);
-    const item = document.createElement('li');
-    item.textContent = name;
-    document.getElementById('stop-list').appendChild(item);
-    document.getElementById('stop-name').value = '';
-  }
-
-  function clearStopList() {
-    selectedStops.length = 0;
-    currentIndex = 0;
-    document.getElementById('stop-list').innerHTML = '';
-    announcedStops.clear();
-  }
-
-  function populateStopOptions() {
-    const datalist = document.getElementById('stop-options');
-    stops.forEach(([name]) => {
-      const option = document.createElement('option');
-      option.value = name;
-      datalist.appendChild(option);
-    });
-  }
-
-  function renderMarkersInView() {
-    const bounds = map.getBounds();
-    markers.forEach(m => map.removeLayer(m));
-    markers.length = 0;
-
-    stops.forEach(([name, lat, lon, url]) => {
-      if (bounds.contains([lat, lon])) {
-        const marker = L.marker([lat, lon]).addTo(map);
-        marker.bindTooltip(name, { permanent: false, direction: "top", offset: [-15, 0] });
-        marker.on('click', () => addManualStopFromMap(name));
-        markers.push(marker);
-      }
-    });
-  }
-
-  function addManualStopFromMap(name) {
-    const stop = stops.find(s => s[0] === name);
-    if (!stop || selectedStops.find(s => s[0] === name)) return;
-    selectedStops.push(stop);
-    const item = document.createElement('li');
-    item.textContent = name;
-    document.getElementById('stop-list').appendChild(item);
-  }
-
-  map.on('moveend', renderMarkersInView);
-
-  // Zapytanie o lokalizację na starcie
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
-      map.setView([lat, lon], 16);
-      mapCentered = true;
-      renderMarkersInView();
-    },
-    handleError,
-    { enableHighAccuracy: true }
-  );
-
-  populateStopOptions();
   </script>
 </body>
 </html>
