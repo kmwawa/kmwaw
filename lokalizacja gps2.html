@@ -7002,7 +7002,7 @@ let readyForNext = false;
 const announcedNext = new Set();
 const announcedArrival = new Set();
 
-const introAudioUrl = "audio/nastepny-przystanek.mp3";
+const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3";
 
 const map = L.map('map').setView([52.2297, 21.0122], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -7129,6 +7129,7 @@ function renderMarkersInView() {
 
 map.on("moveend", renderMarkersInView);
 
+// ⬇️ Od razu pyta o lokalizację
 navigator.geolocation.getCurrentPosition(
   pos => {
     map.setView([pos.coords.latitude, pos.coords.longitude], 16);
