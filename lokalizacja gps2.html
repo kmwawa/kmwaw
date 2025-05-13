@@ -7067,19 +7067,21 @@ function handleError(err) {
   document.getElementById('status').textContent = "❌ Błąd lokalizacji: " + err.message;
 }
 
+function addStopToList(name) {
+  if (!name) return;
+  const stop = stops.find(s => s[0] === name);
+  if (!stop) return;
+  if (selectedStops.find(s => s[0] === name)) return;
+
+  selectedStops.push(stop);
+  const li = document.createElement("li");
+  li.textContent = name;
+  document.getElementById('stop-list').appendChild(li);
+}
+
 function addManualStop() {
   const name = document.getElementById('stop-name').value.trim();
-  const stop = stops.find(s => s[0] === name);
-  if (!stop) {
-    alert("Nie znaleziono przystanku.");
-    return;
-  }
-  if (!selectedStops.find(s => s[0] === name)) {
-    selectedStops.push(stop);
-    const li = document.createElement("li");
-    li.textContent = name;
-    document.getElementById('stop-list').appendChild(li);
-  }
+  addStopToList(name);
   document.getElementById('stop-name').value = "";
 }
 
@@ -7115,13 +7117,11 @@ function renderMarkersInView() {
   markers.forEach(m => map.removeLayer(m));
   markers.length = 0;
 
-  stops.forEach(([name, lat, lon, audio]) => {
+  stops.forEach(([name, lat, lon]) => {
     if (bounds.contains([lat, lon])) {
       const marker = L.marker([lat, lon]).addTo(map);
       marker.bindTooltip(name);
-      marker.on("click", () => {
-        document.getElementById('stop-name').value = name;
-      });
+      marker.on("click", () => addStopToList(name));
       markers.push(marker);
     }
   });
