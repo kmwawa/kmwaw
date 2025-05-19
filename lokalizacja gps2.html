@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Zapowiedzi przystanków</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     body {
       font-family: sans-serif;
@@ -7002,8 +7001,10 @@ let mapCentered = false;
 let readyForNext = false;
 const announcedNext = new Set();
 const announcedArrival = new Set();
+let previousStop = null; // 🆕 Poprzedni przystanek
+let wakeLock = null;     // 🆕 Wake Lock
 
-const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3";
+const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY%20PRZYSTANEK.mp3";
 
 const map = L.map('map').setView([52.2297, 21.0122], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -7035,7 +7036,16 @@ function playSequence(url1, url2) {
 
 function checkLocation(pos) {
   const { latitude: lat, longitude: lon } = pos.coords;
-  document.getElementById('status').textContent = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+  let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+if (currentIndex < selectedStops.length) {
+  const [nextName, stopLat, stopLon] = selectedStops[currentIndex];
+  const distanceToNext = getDistance(lat, lon, stopLat, stopLon);
+  statusText += ` | 🚏 Do przystanku „${nextName}”: ${Math.round(distanceToNext)} m`;
+}
+
+document.getElementById('status').textContent = statusText;
+
 
   if (!mapCentered) {
     map.setView([lat, lon], 16);
@@ -7047,18 +7057,25 @@ function checkLocation(pos) {
   if (currentIndex >= selectedStops.length) return;
 
   const [name, stopLat, stopLon, stopAudio] = selectedStops[currentIndex];
-  const dist = getDistance(lat, lon, stopLat, stopLon);
+  const distToNext = getDistance(lat, lon, stopLat, stopLon);
+  const distFromPrevious = previousStop ? getDistance(lat, lon, previousStop[0], previousStop[1]) : Infinity;
 
-  if (dist > 60 && !announcedNext.has(name)) {
+  if (
+    distToNext > 60 &&
+    distToNext < 50000 &&
+    distFromPrevious > 60 &&
+    !announcedNext.has(name)
+  ) {
     playSequence(introAudioUrl, stopAudio);
     announcedNext.add(name);
     readyForNext = true;
   }
 
-  if (dist <= 60 && readyForNext && !announcedArrival.has(name)) {
+  if (distToNext <= 60 && readyForNext && !announcedArrival.has(name)) {
     const audio = new Audio(stopAudio);
     audio.play();
     announcedArrival.add(name);
+    previousStop = [stopLat, stopLon];
     currentIndex++;
     readyForNext = false;
   }
@@ -7086,8 +7103,32 @@ function addManualStop() {
   document.getElementById('stop-name').value = "";
 }
 
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      console.log('🔒 Wake Lock aktywowany');
+      wakeLock.addEventListener('release', () => {
+        console.log('🔓 Wake Lock zwolniony');
+      });
+    } else {
+      console.warn('Wake Lock API nie jest wspierane.');
+    }
+  } catch (err) {
+    console.error('Błąd Wake Lock:', err);
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (wakeLock !== null && document.visibilityState === 'visible') {
+    requestWakeLock();
+  }
+});
+
 function startAnnouncements() {
   if (watchId !== null) return;
+  requestWakeLock(); // 🆕 Utrzymanie ekranu włączonego
+
   watchId = navigator.geolocation.watchPosition(checkLocation, handleError, {
     enableHighAccuracy: true,
     maximumAge: 0,
@@ -7098,6 +7139,7 @@ function startAnnouncements() {
 function clearStopList() {
   selectedStops.length = 0;
   currentIndex = 0;
+  previousStop = null;
   readyForNext = false;
   announcedNext.clear();
   announcedArrival.clear();
@@ -7130,7 +7172,6 @@ function renderMarkersInView() {
 
 map.on("moveend", renderMarkersInView);
 
-// ⬇️ Od razu pyta o lokalizację
 navigator.geolocation.getCurrentPosition(
   pos => {
     map.setView([pos.coords.latitude, pos.coords.longitude], 16);
@@ -7143,6 +7184,7 @@ navigator.geolocation.getCurrentPosition(
 
 populateStopOptions();
 
+  
   </script>
 </body>
 </html>
