@@ -7973,13 +7973,17 @@ function initApp() {
 }
 
 // 🔐 Logowanie
-const correctPassword = "tajne123";
+const hashedPassword = "ca73d62175023c89e8e3dcbde73ea66868e3218dcc7729f84e55a690b2ac2c1a";
 
-function checkPassword() {
+async function checkPassword() {
   const input = document.getElementById("password-input").value.trim();
   const error = document.getElementById("login-error");
 
-  if (input === correctPassword) {
+  const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+
+  if (hashHex === hashedPassword) {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("main-app").style.display = "block";
     initApp();
@@ -7992,11 +7996,11 @@ window.onload = () => {
   document.getElementById("login-button").addEventListener("click", checkPassword);
   document.getElementById("password-input").focus();
 
-  document.getElementById('start-announcements').addEventListener('click', () => {
+  document.getElementById("start-announcements").addEventListener("click", () => {
     startAnnouncements();
   });
 
-  document.getElementById('skip-announcement').addEventListener('click', () => {
+  document.getElementById("skip-announcement").addEventListener("click", () => {
     skipAnnouncement();
   });
 };
