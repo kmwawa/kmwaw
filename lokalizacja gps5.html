@@ -49,6 +49,31 @@
 		color:yellow;
 		cursor: pointer;
 		}
+		.przycisk2a {
+		height: 38px;
+		border-radius: 3px;
+		border: 2px solid black;
+		background-color: #3399ff;
+		color:white;
+		cursor: pointer;
+		}
+		#str33 {
+		height: 38px;
+		margin-top: 0px; 
+		width: 250px; 
+		font-size:15px;
+		border: none; 
+		border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 40px;
+		border-left: 2px solid black; 
+		border-right: 2px solid black;
+		border-bottom: 2px solid black; 
+		background-color: red;
+		color: yellow;
+		font-weight: bold; 
+		cursor: pointer;""
+		
+		}
 		.ikona {
   font-size: 15px; /* tylko emoji */
   text-align: center;
@@ -59,17 +84,30 @@
  border-radius: 3px;
 		border: 2px solid black;
 		margin-bottom: 10px;
+		width: 150px;
  }
-.stop-name {
- height: 28px;
- 
- }
+
 .przycisk1:hover {
  color: red;
 }
 .przycisk2:hover {
  color: white;
 }
+.stop-name {
+  height: 28px;
+  width: 190px;
+  transition: width 0.3s ease;
+  position: relative;
+  z-index: 1;
+  padding-right: 15px; 
+}
+
+.stop-name.expanded {
+  width: 100%;
+  z-index: 10;
+ 
+}
+
 
   </style>
  
@@ -89,10 +127,6 @@
   
 
   
-  
-  
-  
-  
   <h1>Zapowiedzi na podstawie GPS</h1>
 
   <div id="controls">
@@ -104,25 +138,136 @@
 	<button onclick="clearStopList()" class="przycisk1"><span class="ikona">🗑</span> Wyczyść listę</button>
 	<br><button id="add-reroute" class="przycisk2"><span class="ikona">🔀</span><b>TRASA ZMIENIONA</b></button>
 	<button id="add-shortened" class="przycisk2"><span class="ikona">🚧</span><b>TRASA SKRÓCONA</b></button>
+	<button id="add-newroad" class="przycisk2a"><span class="ikona">🆕</span><b>NOWA TRASA</b></button>
+	
 	<table style="margin-left: auto; margin-right: auto;">
-	<th style="padding-left: 10px; padding-right: 10px;">
+	<tr><td style="padding-left: 10px; padding-right: 10px;">
+	
 	<h3>🚏 Oznacz ostatni przystanek na trasie:</h3>
 <select id="manual-last-stop" class="stop-name">
   <option disabled selected >Wybierz przystanek z listy</option>
 </select>
 <button id="set-last-stop" class="przycisk1">Dodaj: Uwaga! Kurs skrócony - ostatni przystanek na trasie linii:</button>
-</th><th style="padding-left: 10px; padding-right: 10px;">
+</td><td style="padding-left: 10px; padding-right: 10px;">
 
-  <h3>🚏 Oznacz trasa skrócona – ostatni przystanek:</h3>
+  <h3>🚏 Oznacz trase skróconą – ostatni przystanek:</h3>
   <select id="manual-short-last-stop" class="stop-name">
     <option disabled selected>Wybierz przystanek z listy</option>
   </select>
   <button id="set-short-last-stop" class="przycisk1">Dodaj: Uwaga! trasa skrócona - ostatni przystanek:</button>
-</th>
+</td></tr></table>
+
+
+
+<br><hr style="border: 1.4px solid black; margin: 0px 0;">
+<button id="str33" onclick="toggleLastStopOptions()" >⬇️ Pokaż więcej opcji</button>
+<div id="last-stop-advanced-options" style="display: none; margin-top: 10px;">
+
+
+<table style="margin-left: auto; margin-right: auto;">
+ <tr><td style="padding-left: 10px; padding-right: 10px; width:50%">
+<h3>📢 Dodaj specjalną zapowiedź dla 5 ostatnich przystanków:</h3>
+<select id="special-route-select" class="stop-name">
+  <option disabled selected>Wybierz zapowiedź z listy</option>
+  <option value="shortcourse">Kurs skrócona</option>
+  <option value="shortened">Trasa skrócona</option>
+  <option value="zjazd">Zjazd do zajezdni</option>
+  <option value="wola">Zjazd do zajezdni Wola</option>
+  <option value="praga">Zjazd do zajezdni Praga</option>
+  <option value="mokotow">Zjazd do zajezdni Mokotów</option>
+  <option value="zoliborz">Zjazd do zajezdni Żoliborz</option>
+  <option value="annopol">Zjazd do zajezdni Annopol</option>
+  <option value="woronicza">Zjazd do zajezdni Woronicza</option>
+  <option value="kleszczowa">Zjazd do zajezdni Kleszczowa</option>
+  <option value="ostrobramska">Zjazd do zajezdni Ostrobramska</option>
+  <option value="stalowa">Zjazd do zajezdni Stalowa</option>
+  <option value="redutowa">Zjazd do zajezdni Redutowa</option>
+  <option value="plochocinska">Zjazd do zajezdni Płochocińska</option>
+  <option value="ursus">Zjazd do zajezdni Ursus Płn.</option>
+  <option value="estrady">Zjazd do zajezdni Estrady</option>
+  
+</select>
+<button id="apply-special-announcement" class="przycisk1">
+  Zastosuj zapowiedź do końcowych przystanków
+</button>
+</td><td style="padding-left: 10px; padding-right: 10px;">
+<h3>📢 Dodaj specjalną zapowiedź: "... ostatni przystanek: ..."</h3>
+<select id="special-next-stop" class="stop-name">
+  <option disabled selected>Wybierz zapowiedź z listy</option>
+  <option value="trasaskróconaOP">Trasa skrócona - ostatni przystanek</option>
+  <option value="kursskróconyOP">Kurs skrócony - ostatni przystanek</option>
+  <option value="kursskróconyOPNTL">Kurs skrócony - ostatni przystanek na trasie linii</option>
+  <option value="zjazddozajezdniOP">Zjazd do zajezdni - ostatni przystanek na trasie linii</option>
+  <option value="wolaOP">Zjazd do zajezdni Wola - ostatni przystanek na trasie linii</option>
+  <option value="pragaOP">Zjazd do zajezdni Praga - ostatni przystanek na trasie linii</option>
+  <option value="mokotowOP">Zjazd do zajezdni Mokotów - ostatni przystanek na trasie linii</option>
+  <option value="zoliborzOP">Zjazd do zajezdni Żoliborz - ostatni przystanek na trasie linii</option>
+  <option value="annopolOP">Zjazd do zajezdni Annopol - ostatni przystanek na trasie linii</option>
+  <option value="woroniczaOP">Zjazd do zajezdni Woronicza - ostatni przystanek na trasie linii</option>
+  <option value="kleszczowaOP">Zjazd do zajezdni Kleszczowa - ostatni przystanek na trasie linii</option>
+  <option value="ostrobramskaOP">Zjazd do zajezdni Ostrobramska - ostatni przystanek na trasie linii</option>
+  <option value="stalowaOP">Zjazd do zajezdni Stalowa - ostatni przystanek na trasie linii</option>
+  <option value="redutowaOP">Zjazd do zajezdni Redutowa - ostatni przystanek na trasie linii</option>
+  <option value="plochocinskaOP">Zjazd do zajezdni Płochocińska - ostatni przystanek na trasie linii</option>
+  <option value="ursusOP">Zjazd do zajezdni Ursus Płn. - ostatni przystanek na trasie linii</option>
+  <option value="estradyOP">Zjazd do zajezdni Estrady - ostatni przystanek na trasie linii</option>
+  <option value="ostatniprzystanek">ostatni przystanek</option>
+</select>
+
+<select id="manual-next-stop" class="stop-name">
+  <option disabled selected>Wybierz przystanek z listy</option>
+</select>
+
+<button id="apply-next-announcement" class="przycisk1">
+  Zastosuj zapowiedź „...ostatni przystanek...”
+</button>
+</td></tr>
+
+<tr><td style="padding-left: 10px; padding-right: 10px; width:50%">
+<h3>📢 Dodaj specjalną zapowiedź dla 5 przystanków po: <br>"Następny przystanek: (nazwa) ..."</h3>
+<select id="special-zapowiedzi-stop" class="stop-name">
+  <option disabled selected>Wybierz zapowiedź z listy</option>
+  <option value="trasazmieniona">Trasa zmieniona</option>
+  <option value="nowatrasa">Nowa trasa</option>
+</select>
+
+<select id="manual-zapowiedzi-stop" class="stop-name">
+  <option disabled selected>Wybierz przystanek z listy</option>
+</select>
+
+<button id="apply-zapowiedzi-announcement" class="przycisk1">
+  Zastosuj zapowiedź
+</button>
+</td><td style="padding-left: 10px; padding-right: 10px;">
+<h3>📢 Dodaj specjalną zapowiedź tylko po jednym przystanku po: <br>"Następny przystanek: (nazwa) ..."</h3>
+<select id="special-zapowiedzi-pojedyncze-stop" class="stop-name">
+  <option disabled selected>Wybierz zapowiedź z listy</option>
+  <option value="przystanekkoncowy">Przystanek końcowy</option>
+  <option value="koniectrasy">koniec trasy</option>
+  <option value="opuszczeniepojazdu">Prosimy o opuszczenie pojazdu</option>
+  <option value="przystankekoncowy_opuszczenie">przystanek końcowy prosimy o opuszczenie pojazdu</option>
+  <option value="przystankekoncowy_opuszczenie_en">przystanek końcowy prosimy o opuszczenie pojazdu + [EN]</option>
+  <option value="koniectrasy_opuszczenie">koniec trasy prosimy o opuszczenie pojazdu</option>
+  <option value="terminus_please_leave">Terminus please leave the vehicle</option>
+  <option value="zmianatrasy">zmiana trasy</option>
+  <option value="wysiadanie_na_jezdnie">wysiadanie na jezdnie</option>
+  <option value="wysiadanie_na_jezdnie_en">wysiadanie na jezdnie +[EN]</option>
+  <option value="awaria">Awaria</option>
+  <option value="granica_strefy_biletowej">Granica strefy biletowej</option>
+
+</select>
+
+<select id="manual-zapowiedzi-pojedyncze-stop" class="stop-name">
+  <option disabled selected>Wybierz przystanek z listy</option>
+</select>
+
+<button id="apply-zapowiedzi-pojedyncze-announcement" class="przycisk1">
+  Zastosuj zapowiedź
+</button>
+</td></tr>
+
 </table>
-
-  </div>
-
+ </div></div>
   <div id="map"></div>
  <pre id="status">📍 Oczekiwanie na lokalizację...</pre>
   <h3>Wybrane przystanki:</h3>
@@ -133,6 +278,19 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
+  
+function toggleLastStopOptions() {
+  const box = document.getElementById("last-stop-advanced-options");
+  const button = event.target;
+  if (box.style.display === "none") {
+    box.style.display = "block";
+    button.innerHTML = "⬆️ Ukryj dodatkowe opcje";
+  } else {
+    box.style.display = "none";
+    button.innerHTML = "⬇️ Pokaż więcej opcji";
+  }
+}
+
         // Lista przystanków
         const stops = [
 		 
@@ -7737,6 +7895,9 @@ let wakeLock = null;
 let lastPosition = null;
 let manualLastStopName = null;
 let manualShortLastStopName = null;
+let manualNextStopName = null;
+let manualZapowiedziStopName = null;
+let manualZapowiedziPojedynczeStopName = null;
 
 
 const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NAST%C4%98PNY%20PRZYSTANEK.mp3";
@@ -7744,6 +7905,74 @@ const rerouteAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA ZMIE
 const shortenedAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA SKRÓCONA.mp3";
 const lastStopLineAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY OSTATNI PRZYSTANEK NA TRASIE LINII.mp3";
 const shortLastStopLineAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA SKRÓCONA OSTATNI PRZYSTANEK.mp3";
+const newroadAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA! NOWA TRASA.mp3";
+const announcementMap = {
+shortcourse: {
+    label: "KURS SKRÓCONA",
+    url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY.mp3"
+  },
+  shortened: {
+    label: "TRASA SKRÓCONA",
+    url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA SKRÓCONA.mp3"
+  },
+  zjazd: {
+    label: "ZJAZD DO ZAJEZDNI",
+    url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI.mp3"
+  },
+  wola: { label: "ZJAZD DO ZAJEZDNI WOLA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Wola.mp3" },
+  praga: { label: "ZJAZD DO ZAJEZDNI PRAGA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Praga.mp3" },
+  mokotow: { label: "ZJAZD DO ZAJEZDNI MOKOTÓW", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Mokotów.mp3" },
+  zoliborz: { label: "ZJAZD DO ZAJEZDNI ŻOLIBORZ", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Żoliborz.mp3" },
+  annopol: { label: "ZJAZD DO ZAJEZDNI ANNOPOL", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Annopol.mp3" },
+  woronicza: { label: "ZJAZD DO ZAJEZDNI WORONICZA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Woronicza.mp3" },
+  kleszczowa: { label: "ZJAZD DO ZAJEZDNI KLESZCZOWA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Kleszczowa.mp3" },
+  ostrobramska: { label: "ZJAZD DO ZAJEZDNI OSTROBRAMSKA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Ostrobramska.mp3" },
+  stalowa: { label: "ZJAZD DO ZAJEZDNI STALOWA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Stalowa.mp3" },
+  redutowa: { label: "ZJAZD DO ZAJEZDNI REDUTOWA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Redutowa.mp3" },
+  plochocinska: { label: "ZJAZD DO ZAJEZDNI PŁOCHOCIŃSKA", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Płochocińska.mp3" },
+  ursus: { label: "ZJAZD DO ZAJEZDNI URSUS PŁN.", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Ursus Płn..mp3" },
+  estrady: { label: "ZJAZD DO ZAJEZDNI ESTRADY", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Estrady.mp3" },
+  trasaskróconaOP: { label: "TRASA SKRÓCONA - OSTATNI PRZYSTANEK", url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA SKRÓCONA OSTATNI PRZYSTANEK.mp3" },
+  kursskróconyOP: { label: "KURS SKRÓCONA - OSTATNI PRZYSTANEK", url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY OSTATNI PRZYSTANEK.mp3" },
+  kursskróconyOPNTL: { label: "KURS SKRÓCONA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! KURS SKRÓCONY OSTATNI PRZYSTANEK NA TRASIE LINII.mp3" },
+  zjazddozajezdniOP: { label: "ZJAZD DO ZAJEZDNI - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZJAZD DO ZAJEZDNI OSTATNI PRZYSTANEK NA TRASIE LINII.mp3" },
+  wolaOP: { label: "ZJAZD DO ZAJEZDNI WOLA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Wola - ostatni przystanek na trasie linii.mp3" },
+  pragaOP: { label: "ZJAZD DO ZAJEZDNI PRAGA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Praga - ostatni przystanek na trasie linii.mp3" },
+  mokotowOP: { label: "ZJAZD DO ZAJEZDNI MOKOTÓW - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Mokotów - ostatni przystanek na trasie linii.mp3" },
+  zoliborzOP: { label: "ZJAZD DO ZAJEZDNI ŻOLIBORZ - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Żoliborz - ostatni przystanek na trasie linii.mp3" },
+  annopolOP: { label: "ZJAZD DO ZAJEZDNI ANNOPOL - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Annopol - ostatni przystanek na trasie linii.mp3" },
+  woroniczaOP: { label: "ZJAZD DO ZAJEZDNI WORONICZA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Woronicza - ostatni przystanek na trasie linii.mp3" },
+  kleszczowaOP: { label: "ZJAZD DO ZAJEZDNI KLESZCZOWA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Kleszczowa - ostatni przystanek na trasie linii.mp3" },
+  ostrobramskaOP: { label: "ZJAZD DO ZAJEZDNI OSTROBRAMSKA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Ostrobramska - ostatni przystanek na trasie linii.mp3" },
+  stalowaOP: { label: "ZJAZD DO ZAJEZDNI STALOWA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Stalowa - ostatni przystanek na trasie linii.mp3" },
+  redutowaOP: { label: "ZJAZD DO ZAJEZDNI REDUTOWA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Redutowa - ostatni przystanek na trasie linii.mp3" },
+  plochocinskaOP: { label: "ZJAZD DO ZAJEZDNI PŁOCHOCIŃSKA - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Płochocińska - ostatni przystanek na trasie linii.mp3" },
+  ursusOP: { label: "ZJAZD DO ZAJEZDNI URSUS PŁN. - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Ursus Płn. - ostatni przystanek na trasie linii.mp3" },
+  estradyOP: { label: "ZJAZD DO ZAJEZDNI ESTRADY - OSTATNI PRZYSTANEK NA TRASIE LINII", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! zjazd do zajezdni Estrady - ostatni przystanek na trasie linii.mp3" },
+  trasazmieniona: { label: "TRASA ZMIENIONA", url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA ZMIENIONA.mp3" },
+  nowatrasa: { label: "NOWA TRASA", url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! NOWA TRASA.mp3" },
+  przystanekkoncowy: { label: "Przystanek końcowy", url: "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK KOŃCOWY.mp3" }, 
+  koniectrasy: { label: "Koniec trasy", url: "https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY.mp3" }, 
+  opuszczeniepojazdu: { label: "Prosimy o opuszczenie pojazdu", url: "https://kmwawa.github.io/zapowiedzi-3/PROSIMY O OPUSZCZENIE POJAZDU.mp3" }, 
+  przystankekoncowy_opuszczenie: { label: "Przystanek końcowy, prosimy o opuszczenie pojazdu", url: "https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK KOŃCOWY PROSIMY O OPUSZCZENIE POJAZDU.mp3" }, 
+  przystankekoncowy_opuszczenie_en: { label: "Przystanek końcowy, prosimy o opuszczenie pojazdu + [EN]", url: "https://kmwawa.github.io/zapowiedzi-3/przystanek końcowy prosimy o opuszczenie pojazdu [PL+EN].mp3" }, 
+  koniectrasy_opuszczenie: { label: "Koniec trasy, prosimy o opuszczenie pojazdu", url: "https://kmwawa.github.io/zapowiedzi-2/KONIEC TRASY PROSIMY O OPUSZCZENIE POJAZDU.mp3" }, 
+  terminus_please_leave: { label: "Terminus please leave the vehicle", url: "https://kmwawa.github.io/zapowiedzi-3/przystanek końcowy prosimy o opuszczenie pojazdu [EN].mp3" }, 
+  zmianatrasy: { label: "Zmiana trasy", url: "https://kmwawa.github.io/zapowiedzi-4/UWAGA! ZMIANA TRASY.mp3" }, 
+  wysiadanie_na_jezdnie: { label: "Wysiadanie na jezdnie", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! Wysiadanie na Jezdnie.mp3" }, 
+  wysiadanie_na_jezdnie_en: { label: "Wysiadanie na jezdnie +[EN]", url: "https://kmwawa.github.io/zapowiedzi-4/Uwaga! Wysiadanie na Jezdnie + [EN].mp3" }, 
+  awaria: { label: "Awaria", url: "https://kmwawa.github.io/zapowiedzi/Awaria.mp3" },
+  granica_strefy_biletowej: { label: "Granica strefy biletowej", url: "https://kmwawa.github.io/zapowiedzi-2/Granica Strefy Biletowej.mp3" }
+
+
+  
+  
+  
+  
+  
+  
+};
+const nextStopLineAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA!.mp3";
 
 
 const markers = [];
@@ -7771,15 +8000,15 @@ function getMarkerIcon(type) {
       };
       const color = typeToColor[type] || "blue";
 
-      return new L.Icon({
-        iconUrl: iconUrls[color],
-        shadowUrl: iconUrls.shadow,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-      });
-    }
+     return new L.Icon({
+    iconUrl: iconUrls[color],
+    shadowUrl: iconUrls.shadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [0, 10],
+    shadowSize: [41, 41]
+  });
+}
 
     function parseStopData(stop) {
       const [name, lat, lon, audioField, maybeType] = stop;
@@ -7859,6 +8088,36 @@ function getMarkerIcon(type) {
     urls.push(shortStop.audio[0]);        // 🔊 nazwa przystanku
   }
 }
+ if (manualNextStopName) {
+  const nextIndex = selectedStops.findIndex(s => s[0] === manualNextStopName);
+  const rangeStart = Math.max(0, nextIndex - 4);
+
+  if (nextIndex !== -1 && currentIndex >= rangeStart && currentIndex <= nextIndex) {
+    const nextStop = parseStopData(selectedStops[nextIndex]);
+    urls.push(announcementMap); // 🔊 „TRASA SKRÓCONA OSTATNI PRZYSTANEK”
+	urls.push(nextStop.audio[0]);        // 🔊 nazwa przystanku
+  }
+}
+ if (manualZapowiedziStopName) {
+  const zapowiedziIndex = selectedStops.findIndex(s => s[0] === manualZapowiedziStopName);
+  const rangeStart = Math.max(0, zapowiedziIndex - 4);
+
+  if (zapowiedziIndex !== -1 && currentIndex >= rangeStart && currentIndex <= zapowiedziIndex) {
+    const zapowiedziStop = parseStopData(selectedStops[zapowiedziIndex]);
+    urls.push(announcementMap); // 🔊 „TRASA SKRÓCONA OSTATNI PRZYSTANEK”
+	urls.push(zapowiedziStop.audio[0]);        // 🔊 nazwa przystanku
+  }
+}
+ if (manualZapowiedziPojedynczeStopName) {
+  const zapowiedziPojedynczeIndex = selectedStops.findIndex(s => s[0] === manualZapowiedziPojedynczeStopName);
+
+  if (zapowiedziPojedynczeIndex !== -1 && currentIndex === zapowiedziPojedynczeIndex) {
+    const zapowiedziPojedynczeStop = parseStopData(selectedStops[zapowiedziPojedynczeIndex]);
+    urls.push(announcementMap); // 🔊 „TRASA SKRÓCONA OSTATNI PRZYSTANEK”
+    urls.push(zapowiedziPojedynczeStop.audio[0]);        // 🔊 nazwa przystanku
+  }
+}
+
 
 
   playMultiple(urls, () => {
@@ -7871,36 +8130,53 @@ function getMarkerIcon(type) {
 
 
     function checkLocation(pos) {
-      lastPosition = pos;
-      const { latitude: lat, longitude: lon } = pos.coords;
-      document.getElementById('status').textContent =
-        `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+  lastPosition = pos;
+  const { latitude: lat, longitude: lon } = pos.coords;
 
-      if (!mapCentered) {
-        map.setView([lat, lon], 16);
-        mapCentered = true;
-      }
+  if (currentIndex < selectedStops.length) {
+    // Przystanek z listy, który aktualnie "obsługujemy"
+    const stop = parseStopData(selectedStops[currentIndex]);
 
-      renderMarkersInView();
+    // Odległość od użytkownika do tego przystanku
+    const distToCurrentStop = getDistance(lat, lon, stop.lat, stop.lon);
 
-      if (currentIndex >= selectedStops.length) return;
+    document.getElementById('status').textContent =
+      `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)} — Przystanek: "${stop.name}": ${distToCurrentStop.toFixed(0)} m`;
 
-      const stop = parseStopData(selectedStops[currentIndex]);
-      const distToNext = getDistance(lat, lon, stop.lat, stop.lon);
-      const distFromPrevious = previousStop ? getDistance(lat, lon, previousStop[0], previousStop[1]) : Infinity;
+    const distFromPrevious = previousStop
+      ? getDistance(lat, lon, previousStop[0], previousStop[1])
+      : Infinity;
 
-      if (distToNext > 40 && distToNext < 50000 && distFromPrevious > 40 && !announcedNext.has(stop.name)) {
-        announceNextStop();
-      }
-
-      if (distToNext <= 70 && readyForNext && !announcedArrival.has(stop.name)) {
-        playMultiple(stop.audio);
-        announcedArrival.add(stop.name);
-        previousStop = [stop.lat, stop.lon];
-        currentIndex++;
-        readyForNext = false;
-      }
+    if (
+      distToCurrentStop > 40 &&
+      distToCurrentStop < 50000 &&
+      distFromPrevious > 40 &&
+      !announcedNext.has(stop.name)
+    ) {
+      announceNextStop();
     }
+
+    if (distToCurrentStop <= 70 && readyForNext && !announcedArrival.has(stop.name)) {
+      playMultiple(stop.audio);
+      announcedArrival.add(stop.name);
+      previousStop = [stop.lat, stop.lon];
+      currentIndex++;
+      readyForNext = false;
+    }
+
+  } else {
+    document.getElementById('status').textContent =
+      `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)} — Brak dalszych przystanków`;
+  }
+
+  if (!mapCentered) {
+    map.setView([lat, lon], 16);
+    mapCentered = true;
+  }
+
+  renderMarkersInView();
+}
+
 
     function renderMarkersInView() {
       const bounds = map.getBounds();
@@ -7911,7 +8187,13 @@ function getMarkerIcon(type) {
         const { name, lat, lon, type } = parseStopData(stop);
         if (bounds.contains([lat, lon])) {
           const marker = L.marker([lat, lon], { icon: getMarkerIcon(type) }).addTo(map);
-          marker.bindTooltip(name);
+          marker.bindTooltip(name, {
+ 
+  direction: "top",
+  className: "custom-tooltip",
+  offset: [0, -38]
+});
+
           marker.on("click", () => addStopToList(name));
           markers.push(marker);
         }
@@ -7946,6 +8228,9 @@ function clearStopList() {
   announcedArrival.clear();
   manualLastStopName = null;
   manualShortLastStopName = null;
+  manualNextStopName = null;
+  manualZapowiedziStopName = null;
+  manualZapowiedziPojedynczeStopName = null;
   mapCentered = false;
   lastPosition = null;
 
@@ -7995,6 +8280,47 @@ function addManualStop() {
 
   console.log("▶️ Zapowiedzi uruchomione");
 }
+function populateSpecialNextStopSelect() {
+  const select = document.getElementById("special-next-stop");
+  if (!select) return;
+
+  select.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
+
+  stops.forEach((stop, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = stop[2]; // zakładamy, że stop = [id, kodULIC, nazwa]
+    select.appendChild(option);
+  });
+}
+function populateSpecialZapowiedziStopSelect() {
+  const select = document.getElementById("special-zapowiedzi-stop");
+  if (!select) return;
+
+  select.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
+
+  stops.forEach((stop, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = stop[2]; // zakładamy, że stop = [id, kodULIC, nazwa]
+    select.appendChild(option);
+  });
+}
+function populateSpecialZapowiedziPojedynczeStopSelect() {
+  const select = document.getElementById("special-zapowiedzi-pojedyncze-stop");
+  if (!select) return;
+
+  select.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
+
+  stops.forEach((stop, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = stop[2]; // zakładamy, że stop = [id, kodULIC, nazwa]
+    select.appendChild(option);
+  });
+}
+
+
 
 
     function handleError(err) {
@@ -8057,6 +8383,13 @@ function addManualStop() {
   last[3].push(shortenedAudioUrl);
   alert("Dodano zapowiedź TRASA SKRÓCONA do: " + last[0]);
 });
+document.getElementById("add-newroad").addEventListener("click", () => {
+      if (selectedStops.length === 0) return;
+      const last = selectedStops[selectedStops.length - 1];
+      if (!Array.isArray(last[3])) last[3] = [last[3]];
+      last[3].push(newroadAudioUrl);
+      alert("Dodano zapowiedź NOWA TRASA do: " + last[0]);
+    });
 document.getElementById("set-last-stop").addEventListener("click", () => {
   const name = document.getElementById("manual-last-stop").value.trim();
   const stop = selectedStops.find(s => s[0] === name);
@@ -8077,6 +8410,140 @@ document.getElementById("set-short-last-stop").addEventListener("click", () => {
   manualShortLastStopName = name;
   alert(`✅ Przystanek „${name}” ustawiony jako ostatni dla kursu skróconego.`);
 });
+document.getElementById("apply-special-announcement").addEventListener("click", () => {
+  const selected = document.getElementById("special-route-select").value;
+
+  if (!selected || !announcementMap[selected]) {
+    alert("⚠️ Wybierz poprawną zapowiedź.");
+    return;
+  }
+
+  const { label, url } = announcementMap[selected];
+
+  const count = Math.min(5, selectedStops.length);
+  for (let i = selectedStops.length - count; i < selectedStops.length; i++) {
+    const stop = selectedStops[i];
+    if (!Array.isArray(stop[3])) stop[3] = [stop[3]];
+    stop[3].push(url);
+  }
+
+  alert(`✅ Zapowiedź „${label}” dodana do ${count} ostatnich przystanków.`);
+});
+document.getElementById("apply-next-announcement").addEventListener("click", () => {
+  const manualStopName = document.getElementById("manual-next-stop").value.trim();
+  const selectedAnnouncement = document.getElementById("special-next-stop").value;
+
+  const manualStopIndex = selectedStops.findIndex(s => s[0] === manualStopName);
+  if (manualStopIndex === -1) {
+    alert("⛔ Ten przystanek nie znajduje się na liście wybranych przystanków!");
+    return;
+  }
+
+  if (!selectedAnnouncement || !announcementMap[selectedAnnouncement]) {
+    alert("⚠️ Wybierz poprawną zapowiedź.");
+    return;
+  }
+
+  const { label, url } = announcementMap[selectedAnnouncement];
+
+  const manualStop = selectedStops[manualStopIndex];
+  let manualUrl = Array.isArray(manualStop[3]) ? manualStop[3][0] : manualStop[3];
+  if (!manualUrl) {
+    manualUrl = "default-manual-announcement.mp3";
+  }
+
+  // Ustalamy od którego przystanku zacząć (maksymalnie 5 przystanków wstecz, włącznie z obecnym)
+  const startIndex = Math.max(0, manualStopIndex - 4);
+  const endIndex = manualStopIndex;
+
+  for (let i = startIndex; i <= endIndex; i++) {
+    if (!Array.isArray(selectedStops[i][3])) {
+      selectedStops[i][3] = selectedStops[i][3] ? [selectedStops[i][3]] : [];
+    }
+
+    selectedStops[i][3].push(url);        // zapowiedź specjalna
+    selectedStops[i][3].push(manualUrl);  // zapowiedź przystanku wybranego przez użytkownika
+  }
+
+  const affectedStops = selectedStops.slice(startIndex, endIndex + 1).map(s => s[0]).join(", ");
+  alert(`✅ Zapowiedź „${label}” oraz zapowiedź przystanku „${manualStopName}” dodane do: ${affectedStops}`);
+});
+
+document.getElementById("apply-zapowiedzi-announcement").addEventListener("click", () => {
+  const manualStopName = document.getElementById("manual-zapowiedzi-stop").value.trim();
+  const selectedAnnouncement = document.getElementById("special-zapowiedzi-stop").value;
+
+  const manualStopIndex = selectedStops.findIndex(s => s[0] === manualStopName);
+  if (manualStopIndex === -1) {
+    alert("⛔ Ten przystanek nie znajduje się na liście wybranych przystanków!");
+    return;
+  }
+
+  if (!selectedAnnouncement || !announcementMap[selectedAnnouncement]) {
+    alert("⚠️ Wybierz poprawną zapowiedź.");
+    return;
+  }
+
+  const { label, url } = announcementMap[selectedAnnouncement];
+
+  const manualStop = selectedStops[manualStopIndex];
+  let manualUrl = Array.isArray(manualStop[3]) ? manualStop[3][0] : manualStop[3];
+  if (!manualUrl) {
+    manualUrl = "default-manual-announcement.mp3";
+  }
+
+  // Ustalamy od którego przystanku zacząć (maksymalnie 5 przystanków wstecz, włącznie z obecnym)
+  const startIndex = Math.max(0, manualStopIndex - 4);
+  const endIndex = manualStopIndex;
+
+  for (let i = startIndex; i <= endIndex; i++) {
+    if (!Array.isArray(selectedStops[i][3])) {
+      selectedStops[i][3] = selectedStops[i][3] ? [selectedStops[i][3]] : [];
+    }
+
+    selectedStops[i][3].push(url);        // zapowiedź specjalna
+    
+  }
+
+  const affectedStops = selectedStops.slice(startIndex, endIndex + 1).map(s => s[0]).join(", ");
+  alert(`✅ Zapowiedź „${label}” oraz zapowiedź przystanku „${manualStopName}” dodane do: ${affectedStops}`);
+});
+document.getElementById("apply-zapowiedzi-pojedyncze-announcement").addEventListener("click", () => {
+  const manualStopName = document.getElementById("manual-zapowiedzi-pojedyncze-stop").value.trim();
+  const selectedAnnouncement = document.getElementById("special-zapowiedzi-pojedyncze-stop").value;
+
+  const manualStopIndex = selectedStops.findIndex(s => s[0] === manualStopName);
+  if (manualStopIndex === -1) {
+    alert("⛔ Ten przystanek nie znajduje się na liście wybranych przystanków!");
+    return;
+  }
+
+  if (!selectedAnnouncement || !announcementMap[selectedAnnouncement]) {
+    alert("⚠️ Wybierz poprawną zapowiedź.");
+    return;
+  }
+
+  const { label, url } = announcementMap[selectedAnnouncement];
+
+  const manualStop = selectedStops[manualStopIndex];
+  let manualUrl = Array.isArray(manualStop[3]) ? manualStop[3][0] : manualStop[3];
+  if (!manualUrl) {
+    manualUrl = "default-manual-announcement.mp3";
+  }
+
+  // Dodajemy zapowiedź tylko do tego jednego przystanku
+  if (!Array.isArray(selectedStops[manualStopIndex][3])) {
+    selectedStops[manualStopIndex][3] = selectedStops[manualStopIndex][3] ? [selectedStops[manualStopIndex][3]] : [];
+  }
+
+  selectedStops[manualStopIndex][3].push(url);  // zapowiedź specjalna
+
+  alert(`✅ Zapowiedź „${label}” oraz zapowiedź przystanku „${manualStopName}” dodane do: ${manualStopName}`);
+});
+
+
+
+
 
 
 
@@ -8094,8 +8561,14 @@ function updateLastStopSelect() {
 function updateLastStopSelectOptions() {
   const select = document.getElementById("manual-last-stop");
   const shortSelect = document.getElementById("manual-short-last-stop");
+  const nextSelect = document.getElementById("manual-next-stop");
+  const zapowiedziSelect = document.getElementById("manual-zapowiedzi-stop");
+  const zapowiedziPojedynczeSelect = document.getElementById("manual-zapowiedzi-pojedyncze-stop");
   select.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
   shortSelect.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
+  nextSelect.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
+  zapowiedziSelect.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
+  zapowiedziPojedynczeSelect.innerHTML = '<option disabled selected>Wybierz przystanek z listy</option>';
 
   selectedStops.forEach(([name]) => {
     const option1 = document.createElement("option");
@@ -8107,8 +8580,25 @@ function updateLastStopSelectOptions() {
     option2.value = name;
     option2.textContent = name;
     shortSelect.appendChild(option2);
+	
+	const option3 = document.createElement("option");
+    option3.value = name;
+    option3.textContent = name;
+    nextSelect.appendChild(option3);
+	
+	const option4 = document.createElement("option");
+    option4.value = name;
+    option4.textContent = name;
+    zapowiedziSelect.appendChild(option4);
+	
+	const option5 = document.createElement("option");
+    option5.value = name;
+    option5.textContent = name;
+    zapowiedziPojedynczeSelect.appendChild(option5);
+	
   });
 }
+
 
 
     const hashedPassword = "ca73d62175023c89e8e3dcbde73ea66868e3218dcc7729f84e55a690b2ac2c1a";
