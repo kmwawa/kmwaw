@@ -4,6 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KM WAW - zapowiedzi linii</title>
+	<!--
+function playSongs(songList, listId) {
+    const audioPlayer = document.getElementById('audioPlayer');
+    let currentSong = 0;
+    isPlaying = true;
+    currentListId = listId;
+    let skipDelay = false; // Dodajemy flagę, aby pominąć opóźnienie 5 sekund
+
+    // Funkcja sprawdzająca, czy piosenka jest "NASTĘPNY PRZYSTANEK.mp3"
+    function isNextStopSong(songUrl) {
+        return songUrl.endsWith("NASTĘPNY PRZYSTANEK.mp3");
+    }
+
+    // Aktualizuj styl bieżącej piosenki
+    updateCurrentSongStyle(listId, currentSong);
+
+    function playNextSong() {
+        currentSong++;
+        if (currentSong < songList.length) {
+            updateCurrentSongStyle(listId, currentSong);
+            audioPlayer.src = songList[currentSong];
+            audioPlayer.play();
+        } else {
+            isPlaying = false;
+            currentListId = null;
+            // Usuń pogrubienie po zakończeniu listy
+            if (currentSongElement) {
+                currentSongElement.classList.remove('current-song');
+            }
+        }
+    }
+
+    // Funkcja wywoływana po zakończeniu piosenki
+    audioPlayer.onended = function() {
+        if (skipDelay || !isNextStopSong(songList[currentSong])) {
+            // Jeśli flaga skipDelay jest ustawiona lub piosenka nie jest "NASTĘPNY PRZYSTANEK.mp3"
+            setTimeout(playNextSong, 2000); // 5000 ms = 5 sekund
+            skipDelay = false; // Zresetuj flagę skipDelay
+        } else {
+            // Jeśli to jest "NASTĘPNY PRZYSTANEK.mp3", odtwórz następną piosenkę natychmiast
+            playNextSong();
+        }
+    };
+
+    // Rozpocznij odtwarzanie pierwszej piosenki
+    audioPlayer.src = songList[currentSong];
+    audioPlayer.play();
+}
+-->
+<!--
+ <div id="linia">
+        <a onclick="toggleSongs('songListlinia2', [
+            'https://kmwawa.github.io/zapowiedzi-2/LINIA.mp3', 
+            'https://kmwawa.github.io/zapowiedzi/2.mp3', 
+        ])">linia </a>
+        <div id="songListlinia2"></div>
+    </div>
+
+	<div class="container">
+	<div class="vertical-line"></div>
+		<div class="button-container">
+            <button class="button button1" onclick="toggleSongs('songList2', [
+                'https://kmwawa.github.io/zapowiedzi-2/Metro Młociny.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Młociny.mp3', 
+				'https://kmwawa.github.io/zapowiedzi-2/Metro Młociny.mp3',
+				'https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK KOŃCOWY PROSIMY O OPUSZCZENIE POJAZDU.mp3',
+            ])">2 MML - WIN</button>
+            <div id="songList2" class="song-list" style="">
+               <ul class="ul1">
+                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Metro Młociny</li>
+                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Młociny</li>
+                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Zajezdnia Żoliborz</li>
+					<li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Świderska</li>
+                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy_kon.png" class="song-info">Winnica</li>
+					
+                </ul>
+            </div>
+        </div>
+		
+		
+		
+    </div>
+	-->
     <style>
         .container {
     display: flex;
@@ -148,7 +232,19 @@
         }
     </style>
 </head>
-<body>
+
+<body style="font-family: Arial; ">
+
+<div id="login-screen" style="padding: 20px; text-align: center;">
+  <h2>🔐 Wpisz hasło, aby kontynuować</h2>
+  <input type="password" id="password-input" placeholder="Hasło" />
+ <button id="login-button">Zaloguj</button>
+
+  <div id="login-error" style="color: red;"></div>
+</div>
+<div id="main-app" style="display: none;">
+
+
     <h1 id="str1">Zapowiedzi linii</h1>
 	<p style="background-color:#ffffcc; font-size: 17px;">(aby poprawnie działało nie należy zmieniać linii w czasie włączonych już zapowiedzi, można dopiero włączyć nową zapowiedź gdy skończy się cała lista poprzednich zapowiedzi, można również aby nie czekać do końca zapowiedzi odświerzyć stronę i kliknąć nową zapowiedź)</p><br>
      <div class="square1" style="text-align: center;">(TP)</div>&nbsp; - <a id="str1">Trasa Podstawowa
@@ -165,18 +261,7 @@
 	
 	<p><button onclick="toggleVisibility()">Pokaż/Ukryj Wyjazdy i Zjazdy</button></p>
 	
-	<script>
-        function toggleVisibility() {
-            const buttons = document.querySelectorAll('.button5, .button6');
-            buttons.forEach(button => {
-                if (button.style.display === 'none') {
-                    button.style.display = 'inline-block';
-                } else {
-                    button.style.display = 'none';
-                }
-            });
-        }
-    </script>
+
 	
 	<div id="linia">
         <a onclick="toggleSongs('songListlinia1', [
@@ -16685,41 +16770,7 @@
     <audio id="audioPlayer"></audio>
 
 
-<!--
- <div id="linia">
-        <a onclick="toggleSongs('songListlinia2', [
-            'https://kmwawa.github.io/zapowiedzi-2/LINIA.mp3', 
-            'https://kmwawa.github.io/zapowiedzi/2.mp3', 
-        ])">linia </a>
-        <div id="songListlinia2"></div>
-    </div>
 
-	<div class="container">
-	<div class="vertical-line"></div>
-		<div class="button-container">
-            <button class="button button1" onclick="toggleSongs('songList2', [
-                'https://kmwawa.github.io/zapowiedzi-2/Metro Młociny.mp3', 
-				'https://kmwawa.github.io/zapowiedzi-2/NASTĘPNY PRZYSTANEK.mp3', 
-				'https://kmwawa.github.io/zapowiedzi-2/Metro Młociny.mp3', 
-				'https://kmwawa.github.io/zapowiedzi-2/Metro Młociny.mp3',
-				'https://kmwawa.github.io/zapowiedzi-3/PRZYSTANEK KOŃCOWY PROSIMY O OPUSZCZENIE POJAZDU.mp3',
-            ])">2 MML - WIN</button>
-            <div id="songList2" class="song-list" style="">
-               <ul class="ul1">
-                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy_pocz.png" class="song-info">Metro Młociny</li>
-                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Metro Młociny</li>
-                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Zajezdnia Żoliborz</li>
-					<li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy.png" class="song-info">Świderska</li>
-                    <li id="song2"><img src="https://kmwawa.github.io/kmwaw/przy_kon.png" class="song-info">Winnica</li>
-					
-                </ul>
-            </div>
-        </div>
-		
-		
-		
-    </div>
-	-->
 
     <script> 
       
@@ -16880,56 +16931,72 @@ function playSongs(songList, listId) {
     audioPlayer.play();
 }
 
-   
+
+ function toggleVisibility() {
+            const buttons = document.querySelectorAll('.button5, .button6');
+            buttons.forEach(button => {
+                if (button.style.display === 'none') {
+                    button.style.display = 'inline-block';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+        }
+		
+		
+		
+   	 const hashedPassword = "42d514b81b2e5db36a5b23250bd0f90076d0a418aed7706f553db87be9dc0b7a";
+
+    async function checkPassword() {
+      const input = document.getElementById("password-input").value.trim();
+      const error = document.getElementById("login-error");
+
+      const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+
+      if (hashHex === hashedPassword) {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("main-app").style.display = "block";
+        initApp();
+      } else {
+        error.textContent = "❌ Błędne hasło!";
+      }
+    }
+
+    window.onload = () => {
+      document.getElementById("login-button").addEventListener("click", checkPassword);
+      document.getElementById("password-input").focus();
+      document.getElementById("start-announcements").addEventListener("click", startAnnouncements);
+      document.getElementById("skip-announcement").addEventListener("click", skipAnnouncement);
+    };
+	
+</script>
+<script>
+async function sha256(message) {
+    
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  }
+
+  document.getElementById('login-button').addEventListener('click', async function() {
+    const input = document.getElementById('password-input').value;
+    const correctHash = 'ff64f68a16bba2aa7ae9a5c67ed6237b4fa92a44b425d7b6a6e21386f6c99a1a';
+
+    const inputHash = await sha256(input);
+
+    if (inputHash === correctHash) {
+      document.getElementById('login-error').textContent = '';
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('main-app').style.display = 'block';
+    } else {
+      document.getElementById('login-error').textContent = 'Nieprawidłowe hasło!';
+    }
+  });
 </script>
 
 </body>
-</html><!--
-function playSongs(songList, listId) {
-    const audioPlayer = document.getElementById('audioPlayer');
-    let currentSong = 0;
-    isPlaying = true;
-    currentListId = listId;
-    let skipDelay = false; // Dodajemy flagę, aby pominąć opóźnienie 5 sekund
-
-    // Funkcja sprawdzająca, czy piosenka jest "NASTĘPNY PRZYSTANEK.mp3"
-    function isNextStopSong(songUrl) {
-        return songUrl.endsWith("NASTĘPNY PRZYSTANEK.mp3");
-    }
-
-    // Aktualizuj styl bieżącej piosenki
-    updateCurrentSongStyle(listId, currentSong);
-
-    function playNextSong() {
-        currentSong++;
-        if (currentSong < songList.length) {
-            updateCurrentSongStyle(listId, currentSong);
-            audioPlayer.src = songList[currentSong];
-            audioPlayer.play();
-        } else {
-            isPlaying = false;
-            currentListId = null;
-            // Usuń pogrubienie po zakończeniu listy
-            if (currentSongElement) {
-                currentSongElement.classList.remove('current-song');
-            }
-        }
-    }
-
-    // Funkcja wywoływana po zakończeniu piosenki
-    audioPlayer.onended = function() {
-        if (skipDelay || !isNextStopSong(songList[currentSong])) {
-            // Jeśli flaga skipDelay jest ustawiona lub piosenka nie jest "NASTĘPNY PRZYSTANEK.mp3"
-            setTimeout(playNextSong, 2000); // 5000 ms = 5 sekund
-            skipDelay = false; // Zresetuj flagę skipDelay
-        } else {
-            // Jeśli to jest "NASTĘPNY PRZYSTANEK.mp3", odtwórz następną piosenkę natychmiast
-            playNextSong();
-        }
-    };
-
-    // Rozpocznij odtwarzanie pierwszej piosenki
-    audioPlayer.src = songList[currentSong];
-    audioPlayer.play();
-}
--->
+</html>
