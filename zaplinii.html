@@ -8192,13 +8192,15 @@ function getMarkerIcon(type) {
       : Infinity;
 
     if (
-      distToCurrentStop > 40 &&
-      distToCurrentStop < 50000 &&
-      distFromPrevious > 40 &&
-      !announcedNext.has(stop.name)
-    ) {
-      announceNextStop();
-    }
+  distToCurrentStop > 40 &&
+  distToCurrentStop < 50000 &&
+  distFromPrevious > 30 &&  // 🔧 użytkownik musi oddalić się od poprzedniego przystanku
+  previousStop &&           // ⛔ tylko jeśli mamy poprzedni przystanek
+  !announcedNext.has(stop.name)
+) {
+  announceNextStop();
+}
+
 
     if (distToCurrentStop <= 70 && readyForNext && !announcedArrival.has(stop.name)) {
       playMultiple(stop.audio);
