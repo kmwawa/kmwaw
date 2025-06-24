@@ -8174,50 +8174,20 @@ function getMarkerIcon(type) {
 
 
     function checkLocation(pos) {
-  lastPosition = pos;
   const { latitude: lat, longitude: lon } = pos.coords;
+  let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
 
   if (currentIndex < selectedStops.length) {
-    // Przystanek z listy, który aktualnie "obsługujemy"
-    const stop = parseStopData(selectedStops[currentIndex]);
-
-    // Odległość od użytkownika do tego przystanku
-    const distToCurrentStop = getDistance(lat, lon, stop.lat, stop.lon);
-
-    document.getElementById('status').textContent =
-      `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)} — Przystanek: "${stop.name}": ${distToCurrentStop.toFixed(0)} m`;
-
-    const distFromPrevious = previousStop
-      ? getDistance(lat, lon, previousStop[0], previousStop[1])
-      : Infinity;
-
-   if (distance <= 70) {
-        activeStops.add(i);
-      }
-
-      // Krok 2: gdy przekroczysz 110 m od aktywnego przystanku – odtwórz zapowiedź
-      if (activeStops.has(i) && distance >= 40) {
-        playAnnouncement(stop);
-        announcedStops.add(i);
-        activeStops.delete(i); // wyczyść aktywny, niepotrzebny
-      }
-     {
-  announceNextStop();
-}
-
-
-    if (distToCurrentStop <= 70 && readyForNext && !announcedArrival.has(stop.name)) {
-      playMultiple(stop.audio);
-      announcedArrival.add(stop.name);
-      previousStop = [stop.lat, stop.lon];
-      currentIndex++;
-      readyForNext = false;
+    const { name: nextName, lat: stopLat, lon: stopLon } = parseStopData(selectedStops[currentIndex]);
+    const distanceToNext = getDistance(lat, lon, stopLat, stopLon);
+   if (distanceToNext < 70) {
+      statusText += ` | 📍 Przystanek: „${nextName}” (${Math.round(distanceToNext)} m)`;
+    } else {
+      statusText += ` | 📍 Następny przystanek: „${nextName}” (${Math.round(distanceToNext)} m)`;
     }
-
-  } else {
-    document.getElementById('status').textContent =
-      `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)} — Brak dalszych przystanków`;
   }
+
+  document.getElementById('status').textContent = statusText;
 
   if (!mapCentered) {
     map.setView([lat, lon], 16);
@@ -8225,7 +8195,29 @@ function getMarkerIcon(type) {
   }
 
   renderMarkersInView();
+
+  if (currentIndex >= selectedStops.length) return;
+
+  const { name, lat: stopLat, lon: stopLon, audio: stopAudio } = parseStopData(selectedStops[currentIndex]);
+  const distToNext = getDistance(lat, lon, stopLat, stopLon);
+  const distFromPrevious = previousStop ? getDistance(lat, lon, previousStop[0], previousStop[1]) : Infinity;
+
+  if (distToNext > 40 && distToNext < 50000 && distFromPrevious > 40 && !announcedNext.has(name)) {
+    playMultiple([introAudioUrl, ...stopAudio]);
+    announcedNext.add(name);
+    readyForNext = true;
+  }
+
+  if (distToNext <= 70 && readyForNext && !announcedArrival.has(name)) {
+    playMultiple(stopAudio);
+    announcedArrival.add(name);
+    previousStop = [stopLat, stopLon];
+    currentIndex++;
+    readyForNext = false;
+  }
 }
+
+  
 
 
     function renderMarkersInView() {
@@ -8342,6 +8334,18 @@ function populateSpecialNextStopSelect() {
     option.textContent = stop[2]; // zakładamy, że stop = [id, kodULIC, nazwa]
     select.appendChild(option);
   });
+  navigator.geolocation.watchPosition(position => {
+  const lat = position.coords.latitude;
+  const lng = position.coords.longitude;
+
+  const distance = getDistance(lat, lng, nextStop.lat, nextStop.lng);
+
+  const text = distance < 70
+    ? `📍 Przystanek: ${nextStop.name}`
+    : `📍 Następny przystanek: ${nextStop.name}`;
+
+  document.getElementById('status').innerText = text;
+});
 }
 function populateSpecialZapowiedziStopSelect() {
   const select = document.getElementById("special-zapowiedzi-stop");
