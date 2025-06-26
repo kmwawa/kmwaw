@@ -7944,6 +7944,7 @@ let manualZapowiedziStopName = null;
 let manualZapowiedziPojedynczeStopName = null;
 
 
+
 const introAudioUrl = "https://kmwawa.github.io/zapowiedzi-2/NAST%C4%98PNY%20PRZYSTANEK.mp3";
 const rerouteAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA ZMIENIONA.mp3";
 const shortenedAudioUrl = "https://kmwawa.github.io/zapowiedzi-4/UWAGA! TRASA SKRÓCONA.mp3";
@@ -8175,12 +8176,14 @@ function getMarkerIcon(type) {
 
     function checkLocation(pos) {
   const { latitude: lat, longitude: lon } = pos.coords;
+  lastPosition = pos;
+
   let statusText = `📍 Pozycja: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
 
   if (currentIndex < selectedStops.length) {
     const { name: nextName, lat: stopLat, lon: stopLon } = parseStopData(selectedStops[currentIndex]);
     const distanceToNext = getDistance(lat, lon, stopLat, stopLon);
-   if (distanceToNext < 70) {
+    if (distanceToNext < 70) {
       statusText += ` | 📍 Przystanek: „${nextName}” (${Math.round(distanceToNext)} m)`;
     } else {
       statusText += ` | 📍 Następny przystanek: „${nextName}” (${Math.round(distanceToNext)} m)`;
@@ -8202,12 +8205,14 @@ function getMarkerIcon(type) {
   const distToNext = getDistance(lat, lon, stopLat, stopLon);
   const distFromPrevious = previousStop ? getDistance(lat, lon, previousStop[0], previousStop[1]) : Infinity;
 
+  // Only announce next stop if we are more than 40m away from the last stop
   if (distToNext > 40 && distToNext < 50000 && distFromPrevious > 40 && !announcedNext.has(name)) {
     playMultiple([introAudioUrl, ...stopAudio]);
     announcedNext.add(name);
     readyForNext = true;
   }
 
+  // Announce arrival when within 70m
   if (distToNext <= 70 && readyForNext && !announcedArrival.has(name)) {
     playMultiple(stopAudio);
     announcedArrival.add(name);
