@@ -7942,6 +7942,7 @@ let manualShortLastStopName = null;
 let manualNextStopName = null;
 let manualZapowiedziStopName = null;
 let manualZapowiedziPojedynczeStopName = null;
+let lastDistanceToNext = null;
 
 
 
@@ -8174,7 +8175,7 @@ function getMarkerIcon(type) {
 
 
 
-    function checkLocation(pos) {
+  function checkLocation(pos) {
   const { latitude: lat, longitude: lon } = pos.coords;
   lastPosition = pos;
 
@@ -8205,22 +8206,33 @@ function getMarkerIcon(type) {
   const distToNext = getDistance(lat, lon, stopLat, stopLon);
   const distFromPrevious = previousStop ? getDistance(lat, lon, previousStop[0], previousStop[1]) : Infinity;
 
-  // Only announce next stop if we are more than 40m away from the last stop
-  if (distToNext > 40 && distToNext < 50000 && distFromPrevious > 40 && !announcedNext.has(name)) {
-    playMultiple([introAudioUrl, ...stopAudio]);
-    announcedNext.add(name);
-    readyForNext = true;
+  // Only allow "next stop" announcement when distance is decreasing and we passed 40m from previous
+  if (lastDistanceToNext === null || distToNext < lastDistanceToNext) {
+    if (!readyForNext && distFromPrevious > 40 && distToNext > 70) {
+      readyForNext = true;
+    }
   }
 
-  // Announce arrival when within 70m
-  if (distToNext <= 70 && readyForNext && !announcedArrival.has(name)) {
+  // Trigger "next stop" announcement only once when approaching
+  if (readyForNext && !announcedNext.has(name) && distToNext > 70 && distToNext < 500) {
+    playMultiple([introAudioUrl, ...stopAudio]);
+    announcedNext.add(name);
+  }
+
+  // Announce arrival
+  if (distToNext <= 70 && !announcedArrival.has(name)) {
     playMultiple(stopAudio);
     announcedArrival.add(name);
     previousStop = [stopLat, stopLon];
     currentIndex++;
     readyForNext = false;
+    lastDistanceToNext = null;
+    return;
   }
+
+  lastDistanceToNext = distToNext;
 }
+
 
   
 
